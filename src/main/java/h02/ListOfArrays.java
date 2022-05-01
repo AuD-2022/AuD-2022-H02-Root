@@ -79,13 +79,79 @@ public class ListOfArrays<T> {
         //Invalid i?
         if(i < 0 || i > getTotalLength(head))
             throw new IndexOutOfBoundsException(i);
+        //Special case: Empty sequence -> create head/tail as new item
+        if(head == null) {
+            head = new ListOfArraysItem<>();
+            head.array = (T[]) new Object[ARRAY_LENGTH];
+            tail = head;
+        }
         //Find item and array index to insert to
         ListOfArraysItem<T> p = head;
         while(i > p.currentNumber) {
             i -= p.currentNumber;
             p = p.next;
         }
+        Iterator<T> iterator = collection.iterator();
         //p is now the item to insert into and i is the index to insert into (i is the INDEX of the first element that has to be moved -> i = 1 implies second element in array has to be moved)
+        //Special case: Index at start of an array -> Add into both before creating new ones -> Add into current item (p) then advance to second array
+        if(i == p.currentNumber) {
+            //Fill p until full/end of collection
+            while(p.currentNumber != ARRAY_LENGTH && iterator.hasNext()) {
+                p.array[p.currentNumber++] = iterator.next();
+            }
+            if(!iterator.hasNext()) return;
+            //Go to next item
+            p = p.next;
+            i = 0;
+            //Special case: Item is null -> Add new item to insert to later on
+            if(p == null) {
+                p = new ListOfArraysItem<>();
+                p.array = (T[]) new Object[ARRAY_LENGTH];
+                tail = p;
+            }
+        }
+        T[] removed = (T[]) new Object[p.currentNumber - i];
+        int rindex = 0;
+        //Remove elements of this array to be removed
+        while(i < p.currentNumber) {
+            removed[rindex++] = p.array[i++];
+        }
+        p.currentNumber -= removed.length;
+        //Add new items between p and p.next (if p.next != null) until all items have been added
+        while(iterator.hasNext() || rindex >= 0) {
+            //If p is full -> add new item between current p and p.next
+            if(p.currentNumber == ARRAY_LENGTH) {
+                ListOfArraysItem<T> tmp = p.next;
+                p.next = new ListOfArraysItem<>();
+                p.next.array = (T[]) new Object[ARRAY_LENGTH];
+                p.next.next = tmp;
+                p = p.next;
+            }
+            //Fill p until full / end of collection or no more removed elements -> nothing more to add
+            while (p.currentNumber != ARRAY_LENGTH && (iterator.hasNext() || rindex >= 0)) {
+                //Add element of collection? If not -> Add element of removed elements
+                p.array[p.currentNumber++] = iterator.hasNext() ? iterator.next() : removed[rindex--];
+            }
+        }
+
+
+
+
+
+        /*
+        //Special case: next item is null -> Create the item as tail (could also be head due to empty sequence)
+        if(p.next == null) {
+            p.next = new ListOfArraysItem<>();
+            p.next.array = (T[]) new Object[ARRAY_LENGTH];
+            p = p.next;
+            tail = p.next;
+        }
+        */
+
+
+
+
+        /* OLD ---------------------------------------------
         //Get the number of elements to be inserted
         int remainingElements = getTotalLengthOfSequence(collection);
         //How many more items can be added to current item?
@@ -185,6 +251,7 @@ public class ListOfArrays<T> {
             }
 
         }
+        END OF OLD ------------------------------------- */
     }
 
     /**
