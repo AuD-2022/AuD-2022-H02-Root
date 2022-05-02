@@ -142,16 +142,6 @@ public class ListOfArrays<T> {
                 p.array[p.currentNumber++] = iterator.hasNext() ? iterator.next() : removed[rindex--];
             }
         }
-
-        /*
-        //Special case: next item is null -> Create the item as tail (could also be head due to empty sequence)
-        if(p.next == null) {
-            p.next = new ListOfArraysItem<>();
-            p.next.array = (T[]) new Object[ARRAY_LENGTH];
-            p = p.next;
-            tail = p.next;
-        }
-        */
     }
 
     /**
