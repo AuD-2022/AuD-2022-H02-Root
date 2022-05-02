@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+import static h02.ListAssertions.assertListEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ListTest {
 
-  private final List<Integer> list = new ListOfArraysWrapper<>();
+    private final List<Integer> list = new ListOfArraysWrapper<>();
 
     // @Test
     void testThat_addNullWorks() {
@@ -74,31 +75,31 @@ public class ListTest {
         assertThrows(NoSuchElementException.class, it::next);
     }
 
-  @Test
-  void testThat_iteratorWorksWithLargeNumbers() {
-    var n = 100000;
+    @Test
+    void testThat_iteratorWorksWithLargeNumbers() {
+        var n = 100000;
 
-    for (int i = 0; i < n; i++) {
-      assertTrue(list.add(i));
+        for (int i = 0; i < n; i++) {
+            assertTrue(list.add(i));
+        }
+
+        var it = list.iterator();
+        for (int i = 0; i < n; i++) {
+            assertTrue(it.hasNext());
+            assertEquals(i, it.next());
+        }
+
+        assertFalse(it.hasNext());
+        assertThrows(NoSuchElementException.class, it::next);
     }
 
-    var it = list.iterator();
-    for (int i = 0; i < n; i++) {
-      assertTrue(it.hasNext());
-      assertEquals(i, it.next());
+    @Test
+    void testThat_containsOfEmptyIsFalse() {
+        var n = 100;
+        for (var i = -n; i < n; i++) {
+            assertFalse(list.contains(i));
+        }
     }
-
-    assertFalse(it.hasNext());
-    assertThrows(NoSuchElementException.class, it::next);
-  }
-
-  @Test
-  void testThat_containsOfEmptyIsFalse() {
-    var n = 100;
-    for (var i = -n; i < n; i++) {
-      assertFalse(list.contains(i));
-    }
-  }
 
     @Test
     void testThat_containsIsTrueAfterAdding() {
@@ -125,42 +126,40 @@ public class ListTest {
         assertTrue(list.addAll(List.of(5, 7, 2)));
         assertTrue(list.addAll(List.of(5, 2)));
 
-        assertEquals(5, list.get(0));
-        assertEquals(7, list.get(1));
-        assertEquals(2, list.get(2));
-        assertEquals(5, list.get(3));
-        assertEquals(2, list.get(4));
+        assertListEquals(
+            List.of(5, 7, 2, 5, 2),
+            list);
     }
 
-  @Test
-  void testThat_addAllWorksWithLargeNumbers() {
-    var n = 100;
-    for (int i = 0; i < n; i++) {
-      list.addAll(makeBigList(i*n, n));
+    @Test
+    void testThat_addAllWorksWithLargeNumbers() {
+        var n = 100;
+        for (int i = 0; i < n; i++) {
+            list.addAll(makeBigList(i * n, n));
+        }
+
+        for (int i = 0; i < n * n; i++) {
+            assertEquals(i, i);
+        }
     }
 
-    for (int i = 0; i < n*n; i++) {
-      assertEquals(i, i);
+    private List<Integer> makeBigList(int begin, int size) {
+        var list = new ArrayList<Integer>();
+        for (int i = 0; i < size; i++) {
+            list.add(begin + i);
+        }
+        return list;
     }
-  }
 
-  private List<Integer> makeBigList(int begin, int size) {
-    var list = new ArrayList<Integer>();
-    for (int i = 0; i < size; i++) {
-      list.add(begin+i);
-    }
-    return list;
-  }
-
-  @Test
-  void testThat_addWorksWithLargeNumbers() {
-      var n = 10_0000;
-      for (int i = 0; i < n; i++) {
-        list.add(i);
-      }
-      for (int i = 0; i < n; i++) {
-        assertEquals(i,  list.get(i));
-      }
+    @Test
+    void testThat_addWorksWithLargeNumbers() {
+        var n = 10_0000;
+        for (int i = 0; i < n; i++) {
+            list.add(i);
+        }
+        for (int i = 0; i < n; i++) {
+            assertEquals(i, list.get(i));
+        }
     }
 
     @Test

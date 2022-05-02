@@ -9,6 +9,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static h02.ListAssertions.assertListEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("UseBulkOperation")
@@ -16,7 +17,7 @@ public class ListRandomTest {
 
     // Because its over 9000.
     // Might crash you IDE.
-    private static final int N = 91;
+    private static final int N = 9001;
 
     private static final int MAX_LIST_SIZE = 0xff * 10;
 
@@ -73,6 +74,16 @@ public class ListRandomTest {
         return -Math.abs(list.get(index));
     }
 
+    public static Stream<Arguments> provideForAddAll() {
+        return Stream
+            .generate(() -> {
+                var list = randomList();
+                var index = random.nextInt(list.size()+1);
+                return Arguments.of(list, randomList(), index);
+            })
+            .limit(N);
+    }
+
     @ParameterizedTest
     @MethodSource("provideWithRandomList")
     void testThat_ConstructorWorksWithIterator(List<Integer> list) {
@@ -93,10 +104,24 @@ public class ListRandomTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideWithRandomList")
-    void testThat_addAllAndGetWorkInConjuktion(List<Integer> list) {
-        var listToTest = makeListToTest();
-        listToTest.addAll(list);
+    @MethodSource("provideForAddAll")
+    void testThat_addAllWorksWithIterator(List<Integer> list, List<Integer> toAdd, int ignore) {
+        var listToTest = makeListToTest(list);
+
+        list.addAll(toAdd);
+        listToTest.addAll(toAdd);
+
+        assertListEquals(list, listToTest);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForAddAll")
+    void testThat_addAllWithIndexWorksWithIterator(List<Integer> list, List<Integer> toAdd, int index) {
+        var listToTest = makeListToTest(list);
+
+        list.addAll(index, toAdd);
+        listToTest.addAll(index, toAdd);
+
         assertListEquals(list, listToTest);
     }
 
@@ -128,15 +153,6 @@ public class ListRandomTest {
             assertEquals(expected, iter.next());
         }
         assertFalse(iter.hasNext());
-    }
-
-    private void assertListEquals(List<Integer> expected, List<Integer> actual) {
-        assertEquals(
-            expected.size(),
-            actual.size(),
-            "Lists differ in size");
-
-        assertIterableEquals(expected, actual);
     }
 
     private List<Integer> makeListToTest(List<Integer> list) {
