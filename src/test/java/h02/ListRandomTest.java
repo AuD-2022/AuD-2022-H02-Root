@@ -23,7 +23,7 @@ public class ListRandomTest {
     // Consider using a seed while debugging.
     private static final Random random = new Random();
 
-    private static Stream<Arguments> provideForRandomList() {
+    private static Stream<Arguments> provideWithRandomList() {
         return Stream
             .generate(ListRandomTest::randomList)
             .map(Arguments::of)
@@ -74,15 +74,15 @@ public class ListRandomTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideForRandomList")
-    void testThat_ConstructorGetWorkInConjuktion(List<Integer> list) {
+    @MethodSource("provideWithRandomList")
+    void testThat_ConstructorWorksWithIterator(List<Integer> list) {
         var listToTest = makeListToTest(list);
         assertListEquals(list, listToTest);
     }
 
     @ParameterizedTest
-    @MethodSource("provideForRandomList")
-    void testThat_addAndGetWorkInConjuktion(List<Integer> list) {
+    @MethodSource("provideWithRandomList")
+    void testThat_addWorksWithIterator(List<Integer> list) {
         var listToTest = makeListToTest();
 
         for (Integer integer : list) {
@@ -93,7 +93,7 @@ public class ListRandomTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideForRandomList")
+    @MethodSource("provideWithRandomList")
     void testThat_addAllAndGetWorkInConjuktion(List<Integer> list) {
         var listToTest = makeListToTest();
         listToTest.addAll(list);
@@ -117,7 +117,7 @@ public class ListRandomTest {
     }
 
     @ParameterizedTest
-    @MethodSource("provideForRandomList")
+    @MethodSource("provideWithRandomList")
     void testThat_iteratorWorks(List<Integer> list) {
         var listToTest = makeListToTest();
         listToTest.addAll(list);
