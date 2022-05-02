@@ -1,8 +1,9 @@
 package h02;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * A list of ListOfArraysItem objects.
@@ -36,26 +37,34 @@ public class ListOfArrays<T> {
      * @param sequence The elements to be added to the list.
      */
     public ListOfArrays(T[] sequence) {
-        //Empty sequence or null -> Only null references
-        if(sequence == null || sequence.length == 0)
+        if(sequence == null)
             return;
-        //Input elements
-        for(int i = 0; i < sequence.length; i++) {
-            //New ListOfArraysItem object necessary?
-            if(i % ARRAY_LENGTH == 0) {
-                //First ever element?
-                if(head == null)
-                    head = tail = new ListOfArraysItem<>();
-                else {
-                    tail.next = new ListOfArraysItem<>();
-                    tail = tail.next;
-                }
-                tail.array = (T[]) new Object[ARRAY_LENGTH];
-                tail.currentNumber = 0;
-            }
-            //Add element and increment currentNumber
-            tail.array[tail.currentNumber++] = sequence[i];
+
+        for (T t : sequence) {
+            insertSingleElementAtEnd(t);
         }
+    }
+
+    private void insertSingleElementAtEnd(T element) {
+        growIfNeeded();
+        tail.array[tail.currentNumber++] = element;
+    }
+
+    private void growIfNeeded() {
+        if (head == null) {
+            head = tail = newEmptyItem();
+        } else if (tail.currentNumber >= tail.array.length) {
+            tail = tail.next = newEmptyItem();
+        }
+    }
+
+    @NotNull
+    private ListOfArraysItem<T> newEmptyItem() {
+        var item = new ListOfArraysItem<T>();
+        //noinspection unchecked
+        item.array = (T[]) new Object[ARRAY_LENGTH];
+        item.currentNumber = 0;
+        return item;
     }
 
     /**

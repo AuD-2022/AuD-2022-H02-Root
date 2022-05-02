@@ -14,129 +14,136 @@ import static org.junit.jupiter.api.Assertions.*;
 @SuppressWarnings("UseBulkOperation")
 public class ListRandomTest {
 
-  // Because its over 9000.
-  // Might crash you IDE.
-  private static final int N = 91;
+    // Because its over 9000.
+    // Might crash you IDE.
+    private static final int N = 91;
 
-  private static final int MAX_LIST_SIZE = 0xff * 10;
+    private static final int MAX_LIST_SIZE = 0xff * 10;
 
-  // Consider using a seed while debugging.
-  private static final Random random = new Random();
+    // Consider using a seed while debugging.
+    private static final Random random = new Random();
 
-  private static Stream<Arguments> provideForRandomList() {
-    return Stream
-      .generate(ListRandomTest::randomList)
-      .map(Arguments::of)
-      .limit(N);
-  }
-
-  private static <T> List<Integer> randomList() {
-    var size = random.nextInt(MAX_LIST_SIZE);
-    return Stream
-      .generate(random::nextInt)
-      .limit(size)
-      .collect(Collectors.toList());
-  }
-
-  private static Stream<Arguments> provideForContainsWhenInList() {
-    return Stream
-      .generate(ListRandomTest::randomList)
-      .map(ListRandomTest::withContainingElement)
-      .limit(N);
-  }
-
-  private static Arguments withContainingElement(List<Integer> list) {
-    if (list.isEmpty()) {
-      list.add(random.nextInt());
-    }
-    var index = random.nextInt(list.size());
-    return Arguments.of(list, list.get(index));
-  }
-
-  private static Stream<Arguments> provideForContainsWhenInNotList() {
-    return Stream
-      .generate(ListRandomTest::randomList)
-      .map(ListRandomTest::withNotContainingElement)
-      .limit(N);
-  }
-
-  private static Arguments withNotContainingElement(List<Integer> list) {
-    list.replaceAll(Math::abs);
-    return Arguments.of(list, getToFind(list));
-  }
-
-  private static int getToFind(List<Integer> list) {
-    if (list.isEmpty()) {
-      return random.nextInt();
-    }
-    var index = random.nextInt(list.size());
-    return -Math.abs(list.get(index));
-  }
-
-  @ParameterizedTest
-  @MethodSource("provideForRandomList")
-  void testThat_addAndGetWorkInConjuktion(List<Integer> list) {
-    var listToTest = makeListToTest();
-
-    for (Integer integer : list) {
-      listToTest.add(integer);
+    private static Stream<Arguments> provideForRandomList() {
+        return Stream
+            .generate(ListRandomTest::randomList)
+            .map(Arguments::of)
+            .limit(N);
     }
 
-    assertListEquals(list, listToTest);
-  }
-
-  @ParameterizedTest
-  @MethodSource("provideForRandomList")
-  void testThat_addAllAndGetWorkInConjuktion(List<Integer> list) {
-    var listToTest = makeListToTest();
-    listToTest.addAll(list);
-    assertListEquals(list, listToTest);
-  }
-
-  @ParameterizedTest
-  @MethodSource("provideForContainsWhenInList")
-  void testThat_containsWorksWhenInList(List<Integer> list, int toFind) {
-    var listToTest = makeListToTest();
-    listToTest.addAll(list);
-    assertTrue(listToTest.contains(toFind));
-  }
-
-  @ParameterizedTest
-  @MethodSource("provideForContainsWhenInNotList")
-  void testThat_containsWorksWhenInNotList(List<Integer> list, int toFind) {
-    var listToTest = makeListToTest();
-    listToTest.addAll(list);
-    assertFalse(listToTest.contains(toFind));
-  }
-
-  @ParameterizedTest
-  @MethodSource("provideForRandomList")
-  void testThat_iteratorWorks(List<Integer> list) {
-    var listToTest = makeListToTest();
-    listToTest.addAll(list);
-    var iter = listToTest.iterator();
-
-    for (Integer expected : list) {
-      assertTrue(iter.hasNext());
-      assertEquals(expected, iter.next());
+    private static <T> List<Integer> randomList() {
+        var size = random.nextInt(MAX_LIST_SIZE);
+        return Stream
+            .generate(random::nextInt)
+            .limit(size)
+            .collect(Collectors.toList());
     }
-    assertFalse(iter.hasNext());
-  }
 
-  private void assertListEquals(List<Integer> expected, List<Integer> actual) {
-    assertEquals(
-      expected.size(),
-      actual.size(),
-      "Lists differ in size");
-    for (int i = 0; i < expected.size(); i++) {
-      assertEquals(
-        expected.get(i),
-        actual.get(i),
-        "Lists differ at index " + i);
+    private static Stream<Arguments> provideForContainsWhenInList() {
+        return Stream
+            .generate(ListRandomTest::randomList)
+            .map(ListRandomTest::withContainingElement)
+            .limit(N);
     }
-  }
 
-  private List<Integer> makeListToTest() {
-    return new ListOfArraysWrapper<>();
-  }
+    private static Arguments withContainingElement(List<Integer> list) {
+        if (list.isEmpty()) {
+            list.add(random.nextInt());
+        }
+        var index = random.nextInt(list.size());
+        return Arguments.of(list, list.get(index));
+    }
+
+    private static Stream<Arguments> provideForContainsWhenInNotList() {
+        return Stream
+            .generate(ListRandomTest::randomList)
+            .map(ListRandomTest::withNotContainingElement)
+            .limit(N);
+    }
+
+    private static Arguments withNotContainingElement(List<Integer> list) {
+        list.replaceAll(Math::abs);
+        return Arguments.of(list, getToFind(list));
+    }
+
+    private static int getToFind(List<Integer> list) {
+        if (list.isEmpty()) {
+            return random.nextInt();
+        }
+        var index = random.nextInt(list.size());
+        return -Math.abs(list.get(index));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForRandomList")
+    void testThat_ConstructorGetWorkInConjuktion(List<Integer> list) {
+        var listToTest = makeListToTest(list);
+        assertListEquals(list, listToTest);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForRandomList")
+    void testThat_addAndGetWorkInConjuktion(List<Integer> list) {
+        var listToTest = makeListToTest();
+
+        for (Integer integer : list) {
+            listToTest.add(integer);
+        }
+
+        assertListEquals(list, listToTest);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForRandomList")
+    void testThat_addAllAndGetWorkInConjuktion(List<Integer> list) {
+        var listToTest = makeListToTest();
+        listToTest.addAll(list);
+        assertListEquals(list, listToTest);
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForContainsWhenInList")
+    void testThat_containsWorksWhenInList(List<Integer> list, int toFind) {
+        var listToTest = makeListToTest();
+        listToTest.addAll(list);
+        assertTrue(listToTest.contains(toFind));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForContainsWhenInNotList")
+    void testThat_containsWorksWhenInNotList(List<Integer> list, int toFind) {
+        var listToTest = makeListToTest();
+        listToTest.addAll(list);
+        assertFalse(listToTest.contains(toFind));
+    }
+
+    @ParameterizedTest
+    @MethodSource("provideForRandomList")
+    void testThat_iteratorWorks(List<Integer> list) {
+        var listToTest = makeListToTest();
+        listToTest.addAll(list);
+        var iter = listToTest.iterator();
+
+        for (Integer expected : list) {
+            assertTrue(iter.hasNext());
+            assertEquals(expected, iter.next());
+        }
+        assertFalse(iter.hasNext());
+    }
+
+    private void assertListEquals(List<Integer> expected, List<Integer> actual) {
+        assertEquals(
+            expected.size(),
+            actual.size(),
+            "Lists differ in size");
+
+        assertIterableEquals(expected, actual);
+    }
+
+    private List<Integer> makeListToTest(List<Integer> list) {
+        return new ListOfArraysWrapper<>(list.toArray(Integer[]::new));
+    }
+
+    private List<Integer> makeListToTest() {
+        return makeListToTest(List.of());
+    }
 }
