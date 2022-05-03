@@ -9,7 +9,7 @@ import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static h02.ListAssertions.assertListEquals;
+import static h02.ListAssertions.assertListsEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SuppressWarnings("UseBulkOperation")
@@ -88,7 +88,7 @@ public class ListRandomTest {
     @MethodSource("provideWithRandomList")
     void testThat_ConstructorWorksWithIterator(List<Integer> list) {
         var listToTest = makeListToTest(list);
-        assertListEquals(list, listToTest);
+        assertListsEquals(list, listToTest);
     }
 
     @ParameterizedTest
@@ -100,7 +100,7 @@ public class ListRandomTest {
             listToTest.add(integer);
         }
 
-        assertListEquals(list, listToTest);
+        assertListsEquals(list, listToTest);
     }
 
     @ParameterizedTest
@@ -111,7 +111,7 @@ public class ListRandomTest {
         list.addAll(toAdd);
         listToTest.addAll(toAdd);
 
-        assertListEquals(list, listToTest);
+        assertListsEquals(list, listToTest);
     }
 
     @ParameterizedTest
@@ -122,7 +122,7 @@ public class ListRandomTest {
         list.addAll(index, toAdd);
         listToTest.addAll(index, toAdd);
 
-        assertListEquals(list, listToTest);
+        assertListsEquals(list, listToTest);
     }
 
     @ParameterizedTest

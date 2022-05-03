@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import static h02.ListAssertions.assertListEquals;
+import static h02.ListAssertions.assertListsEquals;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ListTest {
@@ -34,10 +34,9 @@ public class ListTest {
         assertTrue(list.add(2));
         assertTrue(list.add(0));
 
-        assertEquals(3, list.get(0));
-        assertEquals(1, list.get(1));
-        assertEquals(2, list.get(2));
-        assertEquals(0, list.get(3));
+        assertListsEquals(
+            List.of(3, 1, 2, 0),
+            list);
     }
 
     @Test
@@ -126,7 +125,7 @@ public class ListTest {
         assertTrue(list.addAll(List.of(5, 7, 2)));
         assertTrue(list.addAll(List.of(5, 2)));
 
-        assertListEquals(
+        assertListsEquals(
             List.of(5, 7, 2, 5, 2),
             list);
     }
