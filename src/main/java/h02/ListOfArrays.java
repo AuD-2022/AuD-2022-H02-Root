@@ -103,12 +103,9 @@ public class ListOfArrays<T> {
             growHead();
         }
 
-        //Find item and array index to insert to
-        ListOfArraysItem<T> p = head;
-        while(p != null && i > p.currentNumber) {
-            i -= p.currentNumber;
-            p = p.next;
-        }
+        var itemByIndex = new ItemByIndex(head, i);
+        var p = itemByIndex.pointer;
+        i = itemByIndex.index;
 
         if (p == null) {
             growTail();
@@ -262,12 +259,12 @@ public class ListOfArrays<T> {
         T[] toResult = (T[]) new Object[j - i + 1];
         int resultIndex = 0;
         int totalIndex = 0;
+
         //Go through elements in this list and count their index until reaching index i
-        ListOfArraysItem<T> p = head;
-        while (totalIndex + p.currentNumber < i + 1) {
-            totalIndex += p.currentNumber;
-            p = p.next;
-        }
+        var itemByIndex = new ItemByIndex(head, i);
+        var p = itemByIndex.pointer;
+        i = itemByIndex.index;
+
         //Add elements from the element at index i and onwards until reaching index j
         totalIndex = i - totalIndex;
         while(resultIndex < toResult.length) {
@@ -284,7 +281,7 @@ public class ListOfArrays<T> {
         //Remove gaps to make list consistent again
         removeArrayGaps(p);
         //Return new ListOfArrays - made with constructor of the composed array
-        return new ListOfArrays(toResult);
+        return new ListOfArrays<>(toResult);
     }
 
     /**
@@ -414,6 +411,22 @@ public class ListOfArrays<T> {
             array[i] = array[i + 1];
         }
         return tmp;
+    }
+
+    private class ItemByIndex {
+
+        final ListOfArraysItem<T> pointer;
+        final int index;
+
+        public ItemByIndex(ListOfArraysItem<T> p, int i) {
+            while(p != null && i > p.currentNumber) {
+                i -= p.currentNumber;
+                p = p.next;
+            }
+
+            pointer = p;
+            index = i;
+        }
     }
 }
 
