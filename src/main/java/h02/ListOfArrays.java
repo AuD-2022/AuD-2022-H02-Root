@@ -134,125 +134,6 @@ public class ListOfArrays<T> {
                     iterator.hasNext() ? iterator.next() : removed[rindex--];
             }
         }
-
-
-
-
-
-        /*
-        //Special case: next item is null -> Create the item as tail (could also be head due to empty sequence)
-        if(p.next == null) {
-            p.next = new ListOfArraysItem<>();
-            p.next.array = (T[]) new Object[ARRAY_LENGTH];
-            p = p.next;
-            tail = p.next;
-        }
-        */
-
-
-
-
-        /* OLD ---------------------------------------------
-        //Get the number of elements to be inserted
-        int remainingElements = getTotalLengthOfSequence(collection);
-        //How many more items can be added to current item?
-        int freeSpace = ARRAY_LENGTH - p.currentNumber;
-        Iterator<T> iterator = collection.iterator();
-        //Move elements in array of item at calculated index by amount of remaining elements or by amount of free space (the lesser of the two) to make space and save overwritten elements
-        T[] removed = moveArrayElementsBy(p, i, freeSpace > remainingElements ? remainingElements : freeSpace);
-        int rIndex = 0;
-        //Add as many items as possible (first items of iterator then items that were removed if there is free space)
-        while(iterator().hasNext() && freeSpace > 0) {
-            p.array[i++] = iterator.next();
-            freeSpace--;
-            p.currentNumber++;
-            remainingElements--;
-        }
-        //Add remaining removed items
-        while(rIndex < removed.length && freeSpace > 0) {
-            p.array[i++] = removed[rIndex++];
-            freeSpace--;
-            p.currentNumber++;
-        }
-        //End if all items have been added
-        if(remainingElements <= 0 && rIndex == removed.length)
-            return;
-        //Not all items have been added -> Either not all elements could be added (full array) or not all removed elements were added again (full array)
-        //Special case: Are we at the end of the list?
-        if(p.next == null) {
-            //Add new item(s) and add elements
-            tail.next = new ListOfArraysItem<>();
-            tail = tail.next;
-            tail.currentNumber = 0;
-            tail.array = (T[]) new Object[ARRAY_LENGTH];
-            //Add items of collection
-            while(remainingElements > 0) {
-                //New item necessary?
-                if(tail.currentNumber == ARRAY_LENGTH) {
-                    tail.next = new ListOfArraysItem<>();
-                    tail = tail.next;
-                    tail.currentNumber = 0;
-                    tail.array = (T[]) new Object[ARRAY_LENGTH];
-                }
-                tail.array[tail.currentNumber++] = iterator.next();
-                remainingElements--;
-            }
-            //Add items that were removed earlier
-            while(rIndex < removed.length) {
-                //New item necessary?
-                if(tail.currentNumber == ARRAY_LENGTH) {
-                    tail.next = new ListOfArraysItem<>();
-                    tail = tail.next;
-                    tail.currentNumber = 0;
-                    tail.array = (T[]) new Object[ARRAY_LENGTH];
-                }
-                tail.array[tail.currentNumber++] = removed[rIndex++];
-            }
-        } else {
-            //Not at end of list but current item was full
-            //How much space does the next item have?
-            freeSpace = ARRAY_LENGTH - p.next.currentNumber;
-            //Can every element we have to add (iterator and removed elements combined) be added into this next item?
-            //Add elements into a new item until the originally next item can be filled (toAdd <= 0 implies that freeSpace is greater than or equal to amount of items to be added)
-            int toAdd = remainingElements + (removed.length - rIndex) - freeSpace;
-            while (toAdd > 0) {
-                //New item necessary?
-                if (p.currentNumber == ARRAY_LENGTH) {
-                    ListOfArraysItem<T> tmp = p.next;
-                    p.next = new ListOfArraysItem<>();
-                    p = p.next;
-                    p.currentNumber = 0;
-                    p.array = (T[]) new Object[ARRAY_LENGTH];
-                    p.next = tmp;
-                }
-                //Add element (Iterator items first - then removed items)
-                if (iterator.hasNext()) {
-                    p.array[p.currentNumber++] = iterator.next();
-                    remainingElements--;
-                } else
-                    p.array[p.currentNumber++] = removed[rIndex++];
-                toAdd--;
-            }
-            //Add elements into the existing item to finish
-            p = p.next;
-            //Move elements to make space at the beginning of the array ("push" them further up the array)
-            //Space is given (due to toAdd <= 0)
-            pushArrayElementsBy(p, remainingElements + (removed.length - rIndex));
-            int index = 0;
-            //Add items of collection
-            while (remainingElements > 0) {
-                p.array[index++] = iterator.next();
-                remainingElements--;
-                p.currentNumber++;
-            }
-            //Add items that were removed earlier
-            while (rIndex < removed.length) {
-                p.array[index++] = removed[rIndex++];
-                p.currentNumber++;
-            }
-
-        }
-        END OF OLD ------------------------------------- */
     }
 
     /**
@@ -262,6 +143,15 @@ public class ListOfArrays<T> {
      * @throws IndexOutOfBoundsException    If an offset is negative.
      */
     public void insert(Iterator<ElementWithIndex<T>> iterator) throws IndexOutOfBoundsException {
+
+
+
+
+
+
+
+
+        /* OLD --------------------------------------------------------------
         //Start at first element in the sequence
         ListOfArraysItem<T> currentItem = head;
         int currentIndex = 0;
@@ -335,6 +225,7 @@ public class ListOfArrays<T> {
                 currentItem.next = tmp;
             }
         }
+        */
     }
 
     /**
