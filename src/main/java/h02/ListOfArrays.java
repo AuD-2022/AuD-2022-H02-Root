@@ -379,6 +379,8 @@ public class ListOfArrays<T> {
         }
         //Remove gaps to make list consistent again
         removeArrayGaps(p);
+        //Remove empty items of the list
+        removeEmptyItems();
         //Return new ListOfArrays - made with constructor of the composed array
         return new ListOfArrays(toResult);
     }
@@ -466,6 +468,27 @@ public class ListOfArrays<T> {
                 item.array[i] = item.array[indexOfNext];
                 item.array[indexOfNext] = null;
             }
+        }
+    }
+
+    private void removeEmptyItems() {
+        ListOfArraysItem<T> p = head;
+        while(p != null) {
+            //Does next item exist and have 0 elements? -> Remove it
+            if(p.next != null && p.next.currentNumber == 0) {
+                p.next = p.next.next;
+                continue;
+            }
+            p = p.next;
+        }
+        //Redo head
+        while(head != null && head.currentNumber == 0) {
+            head = head.next;
+        }
+        //Redo tail
+        tail = head;
+        while(tail != null && tail.next != null) {
+            tail = tail.next;
         }
     }
 
