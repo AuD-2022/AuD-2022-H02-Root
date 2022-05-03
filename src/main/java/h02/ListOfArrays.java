@@ -2,7 +2,6 @@ package h02;
 
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 /**
  * A list of ListOfArraysItem objects.
@@ -81,9 +80,8 @@ public class ListOfArrays<T> {
             throw new IndexOutOfBoundsException(i);
         //Special case: Empty sequence -> create head/tail as new item
         if(head == null) {
-            head = new ListOfArraysItem<>();
+            head = tail =  new ListOfArraysItem<>();
             head.array = (T[]) new Object[ARRAY_LENGTH];
-            tail = head;
         }
         //Find item and array index to insert to
         ListOfArraysItem<T> p = head;
@@ -105,9 +103,8 @@ public class ListOfArrays<T> {
             i = 0;
             //Special case: Item is null -> Add new item to insert to later on
             if(p == null) {
-                p = new ListOfArraysItem<>();
+                p = tail = new ListOfArraysItem<>();
                 p.array = (T[]) new Object[ARRAY_LENGTH];
-                tail = p;
             }
         }
         T[] removed = (T[]) new Object[p.currentNumber - i];
@@ -143,89 +140,76 @@ public class ListOfArrays<T> {
      * @throws IndexOutOfBoundsException    If an offset is negative.
      */
     public void insert(Iterator<ElementWithIndex<T>> iterator) throws IndexOutOfBoundsException {
-
-
-
-
-
-
-
-
-        /* OLD --------------------------------------------------------------
         //Start at first element in the sequence
         ListOfArraysItem<T> currentItem = head;
         int currentIndex = 0;
-        //List to save evicted items that need to be put back in
+        //List to save removed items that need to be put back in later on
         T[] removed = (T[]) new Object[ARRAY_LENGTH];
         //Go through all elements of the iterator until there is no next element or elements index exceeds length of sequence
         while(iterator.hasNext()) {
             ElementWithIndex<T> currentElement = iterator.next();
             int offset = currentElement.getIndex();
             //Negative offset?
-            if(offset < 0)
-                throw new IndexOutOfBoundsException(offset);
-            //Go to the next element / item or reach the end of the sequence
+            if(offset < 0) throw new IndexOutOfBoundsException(offset);
+            //Move forward to desired index and add possible removed elements
             while(offset > 0) {
-                //If there are removed elements that need to be added: Remove current element and insert first removed element to fix sequence again
+                //Insert removed item and save item currently at this position
                 if(removed[0] != null) {
-                    //Only add non-null element
-                    if(currentItem.array[currentIndex] != null)
-                        addToArray(removed, currentItem.array[currentIndex]);
+                    if(currentItem.array[currentIndex] != null) addToArray(removed, currentItem.array[currentIndex]);
+                    else currentItem.currentNumber++;
                     currentItem.array[currentIndex] = getFirst(removed);
                 }
-                //end of current item?
-                if(currentItem.currentNumber <= currentIndex + 1) {
-                    //Is there possible space in this item left? -> Add removed element at end of current item or into new item
-                    if(currentItem.currentNumber < ARRAY_LENGTH) {
-                        //Removed elements to add? If not, simply jump to next item
-                        if(removed[0] != null)
-                            currentItem.array[currentItem.currentNumber++] = getFirst(removed);
-                        else {
-                            currentItem = currentItem.next;
-                            currentIndex = 0;
-                        }
-                    } else {
-                        //End of sequence reached?
-                        if (currentItem.next == null) {
-                            //If there is another element that was removed: Add it to the sequence and move on to it
-                            if (removed[0] != null) {
-                                currentItem.next = new ListOfArraysItem<>();
-                                currentItem.next.currentNumber = 1;
-                                currentItem.next.array = (T[]) new Object[ARRAY_LENGTH];
-                                currentItem.next.array[0] = getFirst(removed);
-                            } else
-                                //Index of current element would exceed list -> End method
-                                return;
-                        }
-                        currentItem = currentItem.next;
-                        currentIndex = 0;
+                //Go to next item?
+                if(currentIndex >= currentItem.currentNumber - 1 && (removed[0] == null || currentItem.currentNumber == ARRAY_LENGTH)) {
+                    //Need to add new item?
+                    if(currentItem.next == null) {
+                        //No more removed elements? -> Offset out of bounds
+                        if(removed[0] == null) return;
+                        currentItem.next = new ListOfArraysItem<>();
+                        currentItem.next.array = (T[]) new Object[ARRAY_LENGTH];
                     }
-                } else
-                    currentIndex++;
+                    currentItem = currentItem.next;
+                    currentIndex = 0;
+                }
+                currentIndex++;
                 offset--;
             }
-            //New element should be inserted at current index of current item -> Remove current element at given position and add new element
-            addToArray(removed, currentItem.array[currentIndex]);
-            currentItem.array[currentIndex] = currentElement.getElement();
-            currentItem.currentNumber++;
-        }
-        //Add all remaining removed elements to complete the insert-operation
-        while(removed[0] != null) {
-            //Does current item have free space?
-            if(currentItem.currentNumber < ARRAY_LENGTH)
-                currentItem.array[currentItem.currentNumber++] = getFirst(removed);
-            else {
-                //insert new item and add element to it
-                ListOfArraysItem<T> tmp = currentItem.next;
-                currentItem.next = new ListOfArraysItem<>();
-                currentItem.next.currentNumber = 1;
-                currentItem.next.array = (T[]) new Object[ARRAY_LENGTH];
-                currentItem.next.array[0] = getFirst(removed);
-                currentItem = currentItem.next;
-                currentItem.next = tmp;
+            //Special case: List is empty
+            if(currentItem == null) {
+                currentItem = head = tail = new ListOfArraysItem<>();
+                currentItem.array = (T[]) new Object[ARRAY_LENGTH];
             }
+            //Add the item at current index
+            if(currentItem.array[currentIndex] != null) addToArray(removed, currentItem.array[currentIndex]);
+            else currentItem.currentNumber++;
+            currentItem.array[currentIndex] = currentElement.getElement();
+            //Increment index/Go to next item/Create new item if necessary
+            if(currentIndex == ARRAY_LENGTH - 1) {
+                if(currentItem.next == null) {
+                    currentItem.next = tail = new ListOfArraysItem<>();
+                    currentItem.next.array = (T[]) new Object[ARRAY_LENGTH];
+                }
+                currentItem = currentItem.next;
+                currentIndex = 0;
+            }
+            else currentIndex++;
         }
-        */
+        //Add remaining elements that were removed earlier
+        while(removed[0] != null) {
+            if(currentItem.array[currentIndex] != null) addToArray(removed, currentItem.array[currentIndex]);
+            else currentItem.currentNumber++;
+            currentItem.array[currentIndex] = getFirst(removed);
+            //Increment index/Go to next item/Create new item if necessary
+            if(currentIndex == ARRAY_LENGTH - 1) {
+                if(currentItem.next == null) {
+                    currentItem.next = tail = new ListOfArraysItem<>();
+                    currentItem.next.array = (T[]) new Object[ARRAY_LENGTH];
+                }
+                currentItem = currentItem.next;
+                currentIndex = 0;
+            }
+            else currentIndex++;
+        }
     }
 
     /**
