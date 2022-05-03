@@ -73,13 +73,45 @@ public class PublicTests {
         var listStart = new ListOfArrays<>(new Object[] {3, 4, 5});
         var listEmpty = new ListOfArrays<>(null);
 
+        assertThrows(IndexOutOfBoundsException.class, () -> listEmpty.insert(List.of(1, 2), 1));
+        assertThrows(IndexOutOfBoundsException.class, () -> listEmpty.insert(List.of(1, 2), -1));
+
         listStart.insert(List.of(1, 2), 0);
-        listEmpty.insert(List.of(1,2,3,4,5), 0);
+        listEmpty.insert(List.of(1, 2, 3, 4, 5), 0);
 
         assertIterableEquals(List.of(1, 2, 3, 4, 5), () -> new ListOfArraysIteratorWrapper<>(listStart));
         assertIterableEquals(List.of(1, 2, 3, 4, 5), () -> new ListOfArraysIteratorWrapper<>(listEmpty));
 
         listStart.insert(List.of(), 1);
+        listEmpty.insert(List.of(6, 7, 8), 5);
+
+        assertIterableEquals(List.of(1, 2, 3, 4, 5), () -> new ListOfArraysIteratorWrapper<>(listStart));
+        assertIterableEquals(List.of(1, 2, 3, 4, 5, 6, 7, 8), () -> new ListOfArraysIteratorWrapper<>(listEmpty));
+
+    }
+
+    @Test
+    void testExtractSpecials() {
+        var listStart = new ListOfArrays<>(new Object[] {3, 4, 5});
+        var listEmpty = new ListOfArrays<>(null);
+
+        assertThrows(IndexOutOfBoundsException.class, () -> listStart.extract(-1, 2));
+        assertThrows(IndexOutOfBoundsException.class, () -> listEmpty.extract(-1, 2));
+        assertThrows(IndexOutOfBoundsException.class, () -> listStart.extract(0, 3));
+        assertThrows(IndexOutOfBoundsException.class, () -> listEmpty.extract(0, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> listStart.extract(1, 0));
+        assertThrows(IndexOutOfBoundsException.class, () -> listEmpty.extract(1, -1));
+
+        var extractStart = listStart.extract(0, 2);
+        listEmpty.insert(List.of(1, 2, 3, 4, 5), 0);
+        var extractEmpty = listEmpty.extract(0, 3);
+
+        assertIterableEquals(List.of(), () -> new ListOfArraysIteratorWrapper<>(listStart));
+        assertIterableEquals(List.of(3, 4, 5), () -> new ListOfArraysIteratorWrapper<>(extractStart));
+        assertIterableEquals(List.of(5), () -> new ListOfArraysIteratorWrapper<>(listEmpty));
+        assertIterableEquals(List.of(1, 2, 3, 4), () -> new ListOfArraysIteratorWrapper<>(extractEmpty));
+
+        listStart.insert(List.of(1, 2, 3, 4, 5), 0);
 
         assertIterableEquals(List.of(1, 2, 3, 4, 5), () -> new ListOfArraysIteratorWrapper<>(listStart));
     }
