@@ -297,54 +297,6 @@ public class ListOfArrays<T> {
     }
 
     /**
-     * Returns the length of given collection.
-     *
-     * @param collection    The collection.
-     * @return              The length of the collection.
-     */
-    private int getTotalLengthOfSequence(Collection<T> collection) {
-        Iterator<T> it = collection.iterator();
-        int result = 0;
-        while(it.hasNext()) {
-            result++;
-            it.next();
-        }
-        return result;
-    }
-
-    /**
-     * Moves the elements of given item and at given start index by given distance (further up in the array).
-     * The array is expected to be big enough to hold the change and have enough free spaces further up the array.
-     *
-     * @param item          The item that will be changed.
-     * @param startIndex    That starting index where changes will begin.
-     * @param distance      The distance by which the elements will be moved.
-     *
-     * @return              The elements that were overwritten
-     */
-    private T[] moveArrayElementsBy(ListOfArraysItem<T> item, int startIndex, int distance) {
-        T[] result = (T[]) new Object[distance];
-        for(int i = 0; i < distance; i++) {
-            result[i] = item.array[startIndex + i + distance];
-            item.array[startIndex + i + distance] = item.array[startIndex + i];
-        }
-        return result;
-    }
-
-    /**
-     * Moves all elements of a given item by a given distance further up the array.
-     * The array is expected to be big enough to hold the change and have enough free spaces further up the array.
-     *
-     * @param item      The item that will be changed.
-     * @param distance  The distance by which the elements will be pushed.
-     */
-    private void pushArrayElementsBy(ListOfArraysItem<T> item, int distance) {
-        for(int i = 0; i < distance; i++)
-            for(int x = item.array.length - 1; x > 0; x++)
-                item.array[x] = item.array[x-1];
-    }
-
-    /**
      * Finds gaps in the given list (null elements with non null elements somewhere behind the gap) and closes them by moving the elements to the front.
      *
      * @param item The list to fix.
