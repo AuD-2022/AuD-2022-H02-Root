@@ -111,10 +111,10 @@ public class ListOfArrays<T> {
             }
         }
         T[] removed = (T[]) new Object[p.currentNumber - i];
-        int rindex = 0;
+        int rindex = -1;
         //Remove elements of this array to be removed
         while(i < p.currentNumber) {
-            removed[rindex++] = p.array[i++];
+            removed[++rindex] = p.array[i++];
         }
         p.currentNumber -= removed.length;
         //Add new items between p and p.next (if p.next != null) until all items have been added
@@ -130,7 +130,8 @@ public class ListOfArrays<T> {
             //Fill p until full / end of collection or no more removed elements -> nothing more to add
             while (p.currentNumber != ARRAY_LENGTH && (iterator.hasNext() || rindex >= 0)) {
                 //Add element of collection? If not -> Add element of removed elements
-                p.array[p.currentNumber++] = iterator.hasNext() ? iterator.next() : removed[rindex--];
+                p.array[p.currentNumber++] =
+                    iterator.hasNext() ? iterator.next() : removed[rindex--];
             }
         }
 
