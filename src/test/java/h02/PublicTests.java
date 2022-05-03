@@ -115,4 +115,37 @@ public class PublicTests {
 
         assertIterableEquals(List.of(1, 2, 3, 4, 5), () -> new ListOfArraysIteratorWrapper<>(listStart));
     }
+
+    @Test
+    void testInsertItSpecials() {
+        var listStart = new ListOfArrays<>(new Object[] {4, 5});
+        var listEmpty = new ListOfArrays<>(null);
+
+        listStart.insert(List.of(
+            new ElementWithIndex<Object>(1, 0),
+            new ElementWithIndex<Object>(2, 0),
+            new ElementWithIndex<Object>(3, 0),
+            new ElementWithIndex<Object>(6, 2)
+        ).iterator());
+
+        assertIterableEquals(List.of(1, 2, 3, 4, 5, 6), () ->
+            new ListOfArraysIteratorWrapper<>(listStart));
+
+        listStart.insert(List.of(
+            new ElementWithIndex<Object>(7, 6)
+        ).iterator());
+
+        assertIterableEquals(List.of(1, 2, 3, 4, 5, 6, 7), () ->
+            new ListOfArraysIteratorWrapper<>(listStart));
+
+        listStart.insert(List.of(
+            new ElementWithIndex<Object>(0, 0),
+            new ElementWithIndex<Object>(8, 7),
+            new ElementWithIndex<Object>(9, 0),
+            new ElementWithIndex<Object>(10, 0)
+        ).iterator());
+
+        assertIterableEquals(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), () ->
+            new ListOfArraysIteratorWrapper<>(listStart));
+    }
 }

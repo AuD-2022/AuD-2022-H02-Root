@@ -164,7 +164,7 @@ public class ListOfArrays<T> {
                     currentItem.array[currentIndex] = getFirst(removed);
                 }
                 //Go to next item?
-                if(currentIndex >= currentItem.currentNumber - 1 && (removed[0] == null || currentItem.currentNumber == ARRAY_LENGTH)) {
+                if(currentIndex >= currentItem.currentNumber - 1 && (removed[0] == null || currentItem.currentNumber == ARRAY_LENGTH) && offset != 1) {
                     //Need to add new item?
                     if(currentItem.next == null) {
                         //No more removed elements? -> Offset out of bounds
