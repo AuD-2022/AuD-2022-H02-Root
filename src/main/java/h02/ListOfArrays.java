@@ -34,6 +34,7 @@ public class ListOfArrays<T> {
      *
      * @param sequence The elements to be added to the list.
      */
+    @SuppressWarnings("unchecked")
     public ListOfArrays(T[] sequence) {
         //Empty sequence or null -> Only null references
         if(sequence == null || sequence.length == 0)
@@ -74,6 +75,7 @@ public class ListOfArrays<T> {
      * @param i                             The index at which the collection should be inserted.
      * @throws IndexOutOfBoundsException    If the given index is not within the bounds of this list.
      */
+    @SuppressWarnings("unchecked")
     public void insert(Collection<T> collection, int i) throws IndexOutOfBoundsException {
         //Invalid i?
         if(i < 0 || i > getTotalLength(head))
@@ -139,6 +141,7 @@ public class ListOfArrays<T> {
      * @param iterator                      The Iterator over the elements (and their offsets) that should be added.
      * @throws IndexOutOfBoundsException    If an offset is negative.
      */
+    @SuppressWarnings("unchecked")
     public void insert(Iterator<ElementWithIndex<T>> iterator) throws IndexOutOfBoundsException {
         //Start at first element in the sequence
         ListOfArraysItem<T> currentItem = head;
@@ -221,6 +224,7 @@ public class ListOfArrays<T> {
      * @return                              The extracted elements as a ListOfArrays object.
      * @throws IndexOutOfBoundsException    If i is greater than j (the lower bound is greater than the upper bound), 0 is greater than i or j is greater than the total length of this list.
      */
+    @SuppressWarnings("unchecked")
     public ListOfArrays<T> extract(int i, int j) throws IndexOutOfBoundsException {
         //Exceptions for i and j
         if(i < 0)
@@ -257,7 +261,7 @@ public class ListOfArrays<T> {
         //Remove empty items of the list
         removeEmptyItems();
         //Return new ListOfArrays - made with constructor of the composed array
-        return new ListOfArrays(toResult);
+        return new ListOfArrays<>(toResult);
     }
 
     /**
@@ -270,54 +274,6 @@ public class ListOfArrays<T> {
         if(item == null)
             return 0;
         return item.currentNumber + getTotalLength(item.next);
-    }
-
-    /**
-     * Returns the length of given collection.
-     *
-     * @param collection    The collection.
-     * @return              The length of the collection.
-     */
-    private int getTotalLengthOfSequence(Collection<T> collection) {
-        Iterator<T> it = collection.iterator();
-        int result = 0;
-        while(it.hasNext()) {
-            result++;
-            it.next();
-        }
-        return result;
-    }
-
-    /**
-     * Moves the elements of given item and at given start index by given distance (further up in the array).
-     * The array is expected to be big enough to hold the change and have enough free spaces further up the array.
-     *
-     * @param item          The item that will be changed.
-     * @param startIndex    That starting index where changes will begin.
-     * @param distance      The distance by which the elements will be moved.
-     *
-     * @return              The elements that were overwritten
-     */
-    private T[] moveArrayElementsBy(ListOfArraysItem<T> item, int startIndex, int distance) {
-        T[] result = (T[]) new Object[distance];
-        for(int i = 0; i < distance; i++) {
-            result[i] = item.array[startIndex + i + distance];
-            item.array[startIndex + i + distance] = item.array[startIndex + i];
-        }
-        return result;
-    }
-
-    /**
-     * Moves all elements of a given item by a given distance further up the array.
-     * The array is expected to be big enough to hold the change and have enough free spaces further up the array.
-     *
-     * @param item      The item that will be changed.
-     * @param distance  The distance by which the elements will be pushed.
-     */
-    private void pushArrayElementsBy(ListOfArraysItem<T> item, int distance) {
-        for(int i = 0; i < distance; i++)
-            for(int x = item.array.length - 1; x > 0; x++)
-                item.array[x] = item.array[x-1];
     }
 
     /**
