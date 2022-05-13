@@ -149,6 +149,7 @@ public class ListOfArrays<T> {
         int currentIndex = 0;
         //List to save removed items that need to be put back in later on
         T[] removed = (T[]) new Object[ARRAY_LENGTH];
+        boolean addedSomething = false;
         //Go through all elements of the iterator until there is no next element or elements index exceeds length of sequence
         while(iterator.hasNext()) {
             ElementWithIndex<T> currentElement = iterator.next();
@@ -157,14 +158,18 @@ public class ListOfArrays<T> {
             if(offset < 0) throw new IndexOutOfBoundsException(offset);
             //Move forward to desired index and add possible removed elements
             while(offset > 0) {
+                boolean addRemoved = false;
                 //Insert removed item and save item currently at this position
                 if(removed[0] != null) {
                     if(currentItem.array[currentIndex] != null) addToArray(removed, currentItem.array[currentIndex]);
                     else currentItem.currentNumber++;
                     currentItem.array[currentIndex] = getFirst(removed);
+                    addRemoved = true;
                 }
                 //Go to next item?
-                if(currentIndex >= currentItem.currentNumber - 1 && (removed[0] == null || currentItem.currentNumber == ARRAY_LENGTH) && offset != 1) {
+                if(currentIndex >= currentItem.currentNumber - 1 &&
+                    ((removed[0] == null && !addRemoved) || currentItem.currentNumber == ARRAY_LENGTH)
+                    && (addedSomething || offset != 1)) {
                     //Need to add new item?
                     if(currentItem.next == null) {
                         //No more removed elements? -> Offset out of bounds
@@ -197,6 +202,7 @@ public class ListOfArrays<T> {
                 currentIndex = 0;
             }
             else currentIndex++;
+            addedSomething = true;
         }
         //Add remaining elements that were removed earlier
         while(removed[0] != null) {

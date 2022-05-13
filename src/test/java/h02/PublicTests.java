@@ -128,24 +128,56 @@ public class PublicTests {
             new ElementWithIndex<Object>(6, 2)
         ).iterator());
 
+        listEmpty.insert(List.of(
+            new ElementWithIndex<Object>(1, 0),
+            new ElementWithIndex<Object>(2, 0),
+            new ElementWithIndex<Object>(3, 1),
+            new ElementWithIndex<Object>(6, 2)
+        ).iterator());
+
         assertIterableEquals(List.of(1, 2, 3, 4, 5, 6), () ->
             new ListOfArraysIteratorWrapper<>(listStart));
+        assertIterableEquals(List.of(1, 2), () ->
+            new ListOfArraysIteratorWrapper<>(listEmpty));
+
+        listEmpty.insert(List.of(
+            new ElementWithIndex<Object>(0, 0),
+            new ElementWithIndex<Object>(3, 3)
+        ).iterator());
+
+        assertIterableEquals(List.of(0, 1, 2), () ->
+            new ListOfArraysIteratorWrapper<>(listEmpty));
 
         listStart.insert(List.of(
+            new ElementWithIndex<Object>(0, 0),
             new ElementWithIndex<Object>(7, 6)
         ).iterator());
 
-        assertIterableEquals(List.of(1, 2, 3, 4, 5, 6, 7), () ->
+        assertIterableEquals(List.of(0, 1, 2, 3, 4, 5, 6, 7), () ->
             new ListOfArraysIteratorWrapper<>(listStart));
 
         listStart.insert(List.of(
             new ElementWithIndex<Object>(0, 0),
-            new ElementWithIndex<Object>(8, 7),
+            new ElementWithIndex<Object>(8, 6),
             new ElementWithIndex<Object>(9, 0),
             new ElementWithIndex<Object>(10, 0)
         ).iterator());
 
-        assertIterableEquals(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), () ->
+        assertIterableEquals(List.of(0, 0, 1, 2, 3, 4, 5, 8, 9, 10, 6, 7), () ->
+            new ListOfArraysIteratorWrapper<>(listStart));
+
+        listStart.insert(List.of(
+            new ElementWithIndex<Object>(11, 12)
+        ).iterator());
+
+        assertIterableEquals(List.of(0, 0, 1, 2, 3, 4, 5, 8, 9, 10, 6, 7, 11), () ->
+            new ListOfArraysIteratorWrapper<>(listStart));
+
+        listStart.insert(List.of(
+            new ElementWithIndex<Object>(12, 14)
+        ).iterator());
+
+        assertIterableEquals(List.of(0, 0, 1, 2, 3, 4, 5, 8, 9, 10, 6, 7, 11), () ->
             new ListOfArraysIteratorWrapper<>(listStart));
     }
 }
