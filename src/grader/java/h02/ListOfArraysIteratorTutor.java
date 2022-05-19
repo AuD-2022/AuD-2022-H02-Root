@@ -7,16 +7,16 @@ import java.util.NoSuchElementException;
  *
  * @param <T> The generic type of the list that this iterator iterates on.
  */
-public class ListOfArraysIterator<T> {
+public class ListOfArraysIteratorTutor<T> {
     public ListOfArraysItem<T> current;
     public int currentIndex;
 
     /**
-     * A constructor to construct a ListOfArraysIterator object.
+     * A constructor to construct a ListOfArraysIteratorTutor object.
      *
      * @param head The head of the list to iterate over.
      */
-    public ListOfArraysIterator(ListOfArraysItem<T> head) {
+    public ListOfArraysIteratorTutor(ListOfArraysItem<T> head) {
         current = head;
         currentIndex = 0;
     }

@@ -2,8 +2,9 @@ import org.sourcegrade.submitter.submit
 
 plugins {
     java
+    eclipse
     application
-    id("org.sourcegrade.style") version "1.3.0"
+    // id("org.sourcegrade.style") version "1.3.0"
     id("org.sourcegrade.submitter") version "0.4.0"
 }
 

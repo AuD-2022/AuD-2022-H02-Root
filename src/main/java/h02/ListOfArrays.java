@@ -13,17 +13,17 @@ public class ListOfArrays<T> {
     /**
      * The length of the arrays of the items of this list.
      */
-    private static final int ARRAY_LENGTH;
+    public static final int ARRAY_LENGTH;
 
     /**
      * The head of this list.
      */
-    private ListOfArraysItem<T> head;
+    public ListOfArraysItem<T> head;
 
     /**
      * The tail of this list.
      */
-    private ListOfArraysItem<T> tail;
+    public ListOfArraysItem<T> tail;
 
     static {
         ARRAY_LENGTH = 256;
@@ -277,7 +277,7 @@ public class ListOfArrays<T> {
      * @param item  The current item.
      * @return      The total number of elements in this list.
      */
-    private int getTotalLength(ListOfArraysItem<T> item) {
+    public int getTotalLength(ListOfArraysItem<T> item) {
         if(item == null)
             return 0;
         return item.currentNumber + getTotalLength(item.next);
@@ -288,7 +288,7 @@ public class ListOfArrays<T> {
      *
      * @param item The list to fix.
      */
-    private void removeArrayGaps(ListOfArraysItem<T> item) {
+    public void removeArrayGaps(ListOfArraysItem<T> item) {
         for(int i = 0; i < item.array.length; i++) {
             if(item.array[i] == null) {
                 //Get next non null element
@@ -309,7 +309,7 @@ public class ListOfArrays<T> {
         }
     }
 
-    private void removeEmptyItems() {
+    public void removeEmptyItems() {
         ListOfArraysItem<T> p = head;
         while(p != null) {
             //Does next item exist and have 0 elements? -> Remove it
@@ -337,7 +337,7 @@ public class ListOfArrays<T> {
      * @param toAdd                         The element to be added.
      * @throws IndexOutOfBoundsException    If the array is already full.
      */
-    private void addToArray(T[] array, T toAdd) throws IndexOutOfBoundsException {
+    public void addToArray(T[] array, T toAdd) throws IndexOutOfBoundsException {
         for(int i = 0; i < array.length; i++) {
             if(array[i] == null) {
                 array[i] = toAdd;
@@ -354,7 +354,7 @@ public class ListOfArrays<T> {
      * @param array The array to change and use.
      * @return      The first element.
      */
-    private T getFirst(T[] array) {
+    public T getFirst(T[] array) {
         //Element to be returned
         T tmp = array[0];
         for(int i = 0; i < array.length; i++) {
