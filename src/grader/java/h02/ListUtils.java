@@ -1,13 +1,192 @@
 package h02;
 
+import org.mockito.Answers;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class ListUtils {
+
+    public record HeadAndTail<T>(ListOfArraysItem<T> head, ListOfArraysItem<T> tail) {
+    }
+
+    /**
+     * Returns the head of the list.
+     *
+     * @param list The list to get the head of.
+     * @param <T>  The type of the list.
+     * @return The head of the list.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> ListOfArraysItem<T> head(ListOfArrays<T> list) {
+        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head");
+        headField.setAccessible(true);
+        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) headField.get(list), "cannot access List head");
+    }
+
+    /**
+     * Returns the tail of the list.
+     *
+     * @param list The list to get the tail of.
+     * @param <T>  The type of the list.
+     * @return The tail of the list.
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> ListOfArraysItem<T> tail(ListOfArrays<T> list) {
+        var tailField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("tail"), "cannot access List tail");
+        tailField.setAccessible(true);
+        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) tailField.get(list), "cannot access List tail");
+    }
+
+    /**
+     * get the  ARRAY_LENGTH Field from ListOfArrays
+     *
+     * @param list the list to get the field from
+     * @return the max length of each array
+     */
+    public static int getArrayLength(ListOfArrays<?> list) {
+        var arrayLengthField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("ARRAY_LENGTH"), "cannot access Field ARRAY_LENGTH");
+        arrayLengthField.setAccessible(true);
+        return assertDoesNotThrow(() -> (int) arrayLengthField.get(list), "cannot access Field ARRAY_LENGTH");
+    }
+
+    /**
+     * sets the head of the list to the given value
+     *
+     * @param list The list to set the head of.
+     * @param head The value to set the head to.
+     * @param <T>  The type of the list.
+     * @return The new head of the list.
+     */
+    public static <T> ListOfArraysItem<T> setHead(ListOfArrays<T> list, ListOfArraysItem<T> head) {
+        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head");
+        headField.setAccessible(true);
+        assertDoesNotThrow(() -> headField.set(list, head), "cannot set List head");
+        return head;
+    }
+
+    /**
+     * sets the tail of the list to the given value
+     *
+     * @param list The list to set the tail of.
+     * @param tail The value to set the tail to.
+     * @param <T>  The type of the list.
+     * @return The new tail of the list.
+     */
+    public static <T> ListOfArraysItem<T> setTail(ListOfArrays<T> list, ListOfArraysItem<T> tail) {
+        var tailField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("tail"), "cannot access List tail");
+        tailField.setAccessible(true);
+        assertDoesNotThrow(() -> tailField.set(list, tail), "cannot set List tail");
+        return tail;
+    }
+
+    /**
+     * sets the head and tail of the list to the given value
+     *
+     * @param list The list to set the head and tail of.
+     * @param ht   The value to set the head and tail to.
+     * @param <T>  The type of the list.
+     * @return The new head and tail of the list.
+     */
+    public static <T> HeadAndTail<T> setHeadAndTail(ListOfArrays<T> list, HeadAndTail ht) {
+        setHead(list, ht.head);
+        setTail(list, ht.tail);
+        return ht;
+    }
+
+    /**
+     * sets the ARRAY_LENGTH Field of the list to the given value
+     *
+     * @param list        the list to set the field of
+     * @param arrayLength the value to set the field to
+     * @return the new value of the field
+     */
+    public static int setArrayLength(ListOfArrays<?> list, int arrayLength) {
+        var arrayLengthField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("ARRAY_LENGTH"), "cannot access Field ARRAY_LENGTH");
+        arrayLengthField.setAccessible(true);
+        // get modifiers to make field non-final
+//        FieldHelper.makeNonFinal(arrayLengthField);
+        assertDoesNotThrow(() -> FieldHelper.setFinalStatic(arrayLengthField, arrayLength), "cannot overwrite Field ARRAY_LENGTH");
+        return arrayLength;
+    }
+
+    /**
+     * create ListOfArrays from List
+     *
+     * @param list the list to create the ListOfArrays from
+     * @param <T>  the type of the list
+     * @return the created ListOfArrays
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> ListOfArrays<T> toList(List<T> list) {
+        ListOfArrays<T> result = mock(ListOfArrays.class, Answers.CALLS_REAL_METHODS);
+        setArrayLength(result, 256);
+        var ht = toHeadTail(list);
+        //Set head and tail
+        setHead(result, ht.head);
+        setTail(result, ht.tail);
+        return result;
+    }
+
+
+    /**
+     * create a ListOfArrays from List and returns the head and tail of the list
+     *
+     * @param list the list to create the ListOfArrays from
+     * @param <T>  the type of the list
+     * @return the head and tail of the created ListOfArrays
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> HeadAndTail<T> toHeadTail(List<T> list) {
+        //Empty sequence or null -> Only null references
+        if (list == null || list.isEmpty()) {
+            return new HeadAndTail<T>(null, null);
+        }
+        var ARRAY_LENGTH = 256;
+        ListOfArraysItem<T> head = null;
+        ListOfArraysItem<T> tail = null;
+
+        //Input elements
+        for (int i = 0; i < list.size(); i++) {
+            //New ListOfArraysItem object necessary?
+            if (i % ARRAY_LENGTH == 0) {
+                //First ever element?
+                if (head == null)
+                    head = tail = new ListOfArraysItem<>();
+                else {
+                    tail.next = new ListOfArraysItem<>();
+                    tail = tail.next;
+                }
+                tail.array = (T[]) new Object[ARRAY_LENGTH];
+                tail.currentNumber = 0;
+            }
+            //Add element and increment currentNumber
+            tail.array[tail.currentNumber++] = list.get(i);
+        }
+
+        return new HeadAndTail<T>(head, tail);
+    }
+
+    /**
+     * create a ListOfArrays from List and returns the head of the list
+     *
+     * @param list the list to create the ListOfArrays from
+     * @param <T>  the type of the list
+     * @return the head of the created ListOfArrays
+     */
+    public static <T> ListOfArraysItem<T> toListHead(List<T> list) {
+        return toHeadTail(list).head;
+    }
+
     public static <T> ListOfArraysIteratorTutor<T> getIterator(ListOfArrays<T> list) {
-        return new ListOfArraysIteratorTutor<>(list.head);
+        return new ListOfArraysIteratorTutor<>(head(list));
     }
 
     /**
@@ -60,17 +239,17 @@ public class ListUtils {
      * @param list The List to check.
      */
     public static void assertListIsBuildCorrectly(ListOfArrays<?> list) {
-        if (list.head == null) {
-            assertNull(list.tail, "Head is null, but tail is not null");  // if head is null, then tail must be null
+        var head = head(list);
+        var tail = tail(list);
+        if (head == null) {
+            assertNull(tail, "Head is null, but tail is not null");  // if head is null, then tail must be null
         } else {
-            assertNotNull(list.tail); // tail must not be null
+            assertNotNull(tail); // tail must not be null
         }
-        var head = list.head;
-        var tail = list.tail;
         for (int i = 0; head != null; head = head.next, i++) {  // iterate over list
             assertItemArrayIsBuildCorrectly(head);
             if (head.next == null) {
-                assertEquals(list.tail, head, "Tail is not the last element");  // check if tail is the same as head
+                assertEquals(tail, head, "Tail is not the last element");  // check if tail is the same as head
             }
         }
     }
@@ -113,5 +292,15 @@ public class ListUtils {
                 }
             }
         }
+    }
+
+    /**
+     * Creates a String list where each element is the string representation of a char with its index
+     *
+     * @param length The length of the list.
+     * @return The generated list.
+     */
+    public static List<String> stringList(int length) {
+        return IntStream.range(0, length).mapToObj(i -> Character.toString((char) i)).collect(Collectors.toList());
     }
 }

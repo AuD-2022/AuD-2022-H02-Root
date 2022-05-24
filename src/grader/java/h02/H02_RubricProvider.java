@@ -70,7 +70,8 @@ public class H02_RubricProvider implements RubricProvider {
                             Grader.testAwareBuilder()
                                 .requirePass(
                                     JUnitTestRef.ofMethod(
-                                        () -> H1TutorTests.class.getDeclaredMethod("testListOfArraysConstructor_CorrectList"))
+                                        () -> H1TutorTests.class.getDeclaredMethod("testListOfArraysConstructor_CorrectList")
+                                    )
                                 )
                                 .build()
                         )
@@ -83,35 +84,46 @@ public class H02_RubricProvider implements RubricProvider {
                 .shortDescription("H2: Iterator-Klasse")
                 .addChildCriteria(
                     Criterion.builder()
-                        .shortDescription("Punkt 1")
+                        .shortDescription("Die Methode hasNext() funktioniert korrekt (für kleine Listen).")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H2TutorTests.class.getDeclaredMethod("test_hasNext_emptyList_returnsFalse")
+                                    )
+                                )
                                 .build()
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Punkt 2")
+                        .shortDescription("Die Methode next() funktioniert korrekt.")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H2TutorTests.class.getDeclaredMethod("test_next_emptyList_throwsNoSuchElementException")
+                                    )
+                                )
                                 .build()
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Punkt 3")
+                        .shortDescription("Die Klasse ListOfArraysIterator sowie die Methode iterator() der Klasse ListOfArrays sind vollständig korrekt.")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.and(
+                                        JUnitTestRef.ofMethod(
+                                            () -> H2TutorTests.class.getDeclaredMethod("test_hasNext_emptyList_returnsFalse")
+                                        ),
+                                        JUnitTestRef.ofMethod(
+                                            () -> H2TutorTests.class.getDeclaredMethod("test_next_emptyList_throwsNoSuchElementException")
+                                        ),
+                                        JUnitTestRef.ofMethod(
+                                            () -> H2TutorTests.class.getDeclaredMethod("test_iterator_combined")
+                                        )
+                                    )
+                                )
                                 .build()
                         )
                         .build()
@@ -128,7 +140,8 @@ public class H02_RubricProvider implements RubricProvider {
                             Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H1TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
                                 .build()
                         )
@@ -139,7 +152,8 @@ public class H02_RubricProvider implements RubricProvider {
                             Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H1TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
                                 .build()
                         )
@@ -150,7 +164,8 @@ public class H02_RubricProvider implements RubricProvider {
                             Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H1TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
                                 .build()
                         )
@@ -161,7 +176,8 @@ public class H02_RubricProvider implements RubricProvider {
                             Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H1TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
                                 .build()
                         )

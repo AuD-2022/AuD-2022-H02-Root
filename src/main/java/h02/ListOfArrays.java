@@ -13,17 +13,17 @@ public class ListOfArrays<T> {
     /**
      * The length of the arrays of the items of this list.
      */
-    public static final int ARRAY_LENGTH;
+    private static final int ARRAY_LENGTH;
 
     /**
      * The head of this list.
      */
-    public ListOfArraysItem<T> head;
+    private ListOfArraysItem<T> head;
 
     /**
      * The tail of this list.
      */
-    public ListOfArraysItem<T> tail;
+    private ListOfArraysItem<T> tail;
 
     static {
         ARRAY_LENGTH = 256;
