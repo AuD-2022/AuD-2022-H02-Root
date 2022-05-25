@@ -1,6 +1,7 @@
 package h02;
 
 import org.junit.jupiter.api.Test;
+import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.NoSuchElementException;
 
 import static h02.ListUtils.*;
 import static org.junit.jupiter.api.Assertions.*;
-
+@TestForSubmission("h02")
 public class H2TutorTests {
 
 

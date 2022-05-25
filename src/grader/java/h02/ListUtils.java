@@ -3,18 +3,27 @@ package h02;
 import org.mockito.Answers;
 import org.opentest4j.AssertionFailedError;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Util Methods for ListOfArrays
+ *
+ * @author Ruben Deisenroth
+ */
 public class ListUtils {
 
+    /**
+     * Record Class to store head and tail of a list
+     *
+     * @param head head of the list
+     * @param tail tail of the list
+     * @param <T>  type of the list
+     */
     public record HeadAndTail<T>(ListOfArraysItem<T> head, ListOfArraysItem<T> tail) {
     }
 
@@ -27,9 +36,9 @@ public class ListUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> ListOfArraysItem<T> head(ListOfArrays<T> list) {
-        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head");
+        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
         headField.setAccessible(true);
-        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) headField.get(list), "cannot access List head");
+        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) headField.get(list), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
     }
 
     /**
@@ -67,7 +76,7 @@ public class ListUtils {
      * @return The new head of the list.
      */
     public static <T> ListOfArraysItem<T> setHead(ListOfArrays<T> list, ListOfArraysItem<T> head) {
-        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head");
+        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
         headField.setAccessible(true);
         assertDoesNotThrow(() -> headField.set(list, head), "cannot set List head");
         return head;
@@ -118,6 +127,15 @@ public class ListUtils {
         return arrayLength;
     }
 
+    /**
+     * Creates a new ElementWithIndex with the given index and value. Optionally stubbing the constructor and getters.
+     *
+     * @param element the value of the new ElementWithIndex
+     * @param index   the index of the new ElementWithIndex
+     * @param stub    Whether to stub the constructor and getters.
+     * @param <T>     The type of the ElementWithIndex.
+     * @return The new ElementWithIndex.
+     */
     @SuppressWarnings("unchecked")
     public static <T> ElementWithIndex<T> makeElementWithIndex(T element, int index, boolean stub) {
         if (!stub) {
@@ -129,6 +147,14 @@ public class ListUtils {
         return elementWithIndex;
     }
 
+    /**
+     * Creates a new ElementWithIndex with the given index and value.
+     *
+     * @param element the value of the new ElementWithIndex
+     * @param index   the index of the new ElementWithIndex
+     * @param <T>     The type of the ElementWithIndex.
+     * @return The new ElementWithIndex.
+     */
     public static <T> ElementWithIndex<T> makeElementWithIndex(T element, int index) {
         return makeElementWithIndex(element, index, true);
     }
@@ -142,7 +168,7 @@ public class ListUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> ListOfArrays<T> toList(List<T> list) {
-        ListOfArrays<T> result = mock(ListOfArrays.class, Answers.CALLS_REAL_METHODS);
+        ListOfArrays<T> result = spy(mock(ListOfArrays.class, Answers.RETURNS_SELF));
 //        setArrayLength(result, 256);
         var ht = toHeadTail(list);
         //Set head and tail
@@ -201,6 +227,13 @@ public class ListUtils {
         return toHeadTail(list).head;
     }
 
+    /**
+     * Creates a Failsafe Tutor Iterator for a given ListOfArrays.
+     *
+     * @param list the ListOfArrays to create the Failsafe Tutor Iterator for
+     * @param <T>  the type of the ListOfArrays
+     * @return the created Failsafe Tutor Iterator
+     */
     public static <T> ListOfArraysIteratorTutor<T> getIterator(ListOfArrays<T> list) {
         return new ListOfArraysIteratorTutor<>(head(list));
     }
@@ -273,6 +306,11 @@ public class ListUtils {
 //        assertTrue(visited.contains(tail), "Detached List Tail");  // check if tail is in the list
     }
 
+    /**
+     * Asserts that the given ListOfArraysItem is Build Correctly.
+     *
+     * @param element The ListOfArraysItem to check.
+     */
     private static void assertItemArrayIsBuildCorrectly(ListOfArraysItem<?> element) {
         assertNotNull(element.array);
         // check that currentNumber is the number of elements in the array
@@ -323,40 +361,23 @@ public class ListUtils {
         return IntStream.range(0, length).mapToObj(i -> Character.toString((char) i)).collect(Collectors.toList());
     }
 
+    /**
+     * Creates an Integer list where each element is the index of the element.
+     *
+     * @param length The length of the list.
+     * @return The generated list.
+     */
     public static List<Integer> intList(int length) {
         return IntStream.range(0, length).boxed().collect(Collectors.toList());
     }
 
-    @FunctionalInterface
-    public interface CheckedRunnable<E extends Exception> extends Runnable {
-
-        @Override
-        default void run() throws RuntimeException {
-            try {
-                runThrows();
-            } catch (Exception ex) {
-                throw new RuntimeException(ex);
-            }
-        }
-
-        void runThrows() throws E;
-
-    }
-
-    public static void assertOr(CheckedRunnable<Exception>... assertions) {
-        var failed = new HashMap<CheckedRunnable<Exception>, Throwable>();
-        for (var assertion : assertions) {
-            try {
-                assertion.run();
-            } catch (Throwable e) {
-                failed.put(assertion, e);
-            }
-        }
-        if (!failed.isEmpty()) {
-            var message = String.format("All %s assertions failed:\n %s", failed.size(), failed.entrySet().stream().map(e -> e.getKey().toString() + ": " + e.getValue().getMessage()).collect(Collectors.joining("\n")));
-        }
-    }
-
+    /**
+     * Asserts that the actual argument isi equal to at least one of the expected arguments.
+     *
+     * @param expected The expected arguments.
+     * @param actual   The actual argument.
+     * @param message  The message to display if the assertion fails.
+     */
     public static void assertEqualsOneOf(List<Object> expected, Object actual, String message) {
         var failed = new HashSet<Throwable>();
         for (Object expectedElement : expected) {
@@ -377,6 +398,12 @@ public class ListUtils {
         }
     }
 
+    /**
+     * Asserts that the actual argument isi equal to at least one of the expected arguments.
+     *
+     * @param expected The expected arguments.
+     * @param actual   The actual argument.
+     */
     public static void assertEqualsOneOf(List<Object> expected, Object actual) {
         assertEqualsOneOf(expected, actual, (String) null);
     }

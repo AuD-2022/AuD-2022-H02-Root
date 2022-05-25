@@ -25,6 +25,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         )
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -37,6 +39,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H1TutorTests.class.getDeclaredMethod("testListOfArraysConstructor_SingleElementList")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -49,6 +53,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H1TutorTests.class.getDeclaredMethod("testListOfArraysConstructor_LongList")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -61,6 +67,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H1TutorTests.class.getDeclaredMethod("testListOfArraysConstructor_SameElements")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -73,6 +81,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H1TutorTests.class.getDeclaredMethod("testListOfArraysConstructor_CorrectList")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build()
@@ -92,6 +102,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H2TutorTests.class.getDeclaredMethod("test_hasNext_emptyList_returnsFalse")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -104,6 +116,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H2TutorTests.class.getDeclaredMethod("test_next_emptyList_throwsNoSuchElementException")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -124,6 +138,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         )
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build()
@@ -143,6 +159,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H3TutorTests.class.getDeclaredMethod("testInsertEmptyList")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -155,6 +173,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H3TutorTests.class.getDeclaredMethod("testInsertExceptions")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -167,6 +187,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H3TutorTests.class.getDeclaredMethod("testInsertAtEnd")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -179,6 +201,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H3TutorTests.class.getDeclaredMethod("testInsertAtEndWithMoreThan256Elements")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -191,6 +215,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H3TutorTests.class.getDeclaredMethod("testInsertInMiddle")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -203,6 +229,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H3TutorTests.class.getDeclaredMethod("testInsertInMiddleWithMoreThan256Elements")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build()
@@ -222,6 +250,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H4TutorTests.class.getDeclaredMethod("testExtractWithEmptyList")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -234,6 +264,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H4TutorTests.class.getDeclaredMethod("testExtractWithOneElement")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -246,6 +278,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H4TutorTests.class.getDeclaredMethod("testExtractWithMultipleElements")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -258,6 +292,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H4TutorTests.class.getDeclaredMethod("testExtractWithAllElements")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -265,11 +301,13 @@ public class H02_RubricProvider implements RubricProvider {
                         .shortDescription("Löschen in der Mitte der Liste funktioniert korrekt mit kleinen Listen.")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H4TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractWithMultipleElementsInTheMiddle")
+                                    )
+                                )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -277,11 +315,13 @@ public class H02_RubricProvider implements RubricProvider {
                         .shortDescription("Löschen in der Mitte der Liste funktioniert korrekt mit großen Listen. (>256 Elemente)")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H4TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractWithMoreThan256ElementsInTheMiddle")
+                                    )
+                                )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -294,6 +334,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H4TutorTests.class.getDeclaredMethod("testExtractReturnValue")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build(),
@@ -306,6 +348,8 @@ public class H02_RubricProvider implements RubricProvider {
                                         () -> H4TutorTests.class.getDeclaredMethod("testExtractCombined")
                                     )
                                 )
+                                .pointsFailedMin()
+                                .pointsPassedMax()
                                 .build()
                         )
                         .build()
@@ -323,6 +367,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testElementWithIndex")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -335,6 +381,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertExceptionWithNegativeIndex")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -347,6 +395,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertExceptionWithTooManyElements")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -359,6 +409,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertAtEnd")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -371,6 +423,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertAtBeginning")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -383,6 +437,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertInMiddle")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -395,6 +451,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertMultipleAsBlock")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -407,6 +465,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertMultipleAsSpread")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -419,6 +479,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 () -> H5TutorTests.class.getDeclaredMethod("testInsertStopConditions")
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build(),
@@ -457,6 +519,8 @@ public class H02_RubricProvider implements RubricProvider {
                                                 )
                                             )
                                         )
+                                        .pointsFailedMin()
+                                        .pointsPassedMax()
                                         .build()
                                 )
                                 .build()

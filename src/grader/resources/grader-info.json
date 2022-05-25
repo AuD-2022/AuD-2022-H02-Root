@@ -7,13 +7,30 @@
     {
       "name": "grader",
       "files": [
-        "h02/H02_RubricProvider.java"
+        "h02/FieldHelper.java",
+        "h02/H5TutorTests.java",
+        "h02/H4TutorTests.java",
+        "h02/H02_RubricProvider.java",
+        "h02/ListOfArraysIteratorTutor.java",
+        "h02/H2TutorTests.java",
+        "h02/ListUtils.java",
+        "h02/H1TutorTests.java",
+        "h02/ListOfArraysWrapper.java",
+        "h02/H3TutorTests.java",
+        "h02/ListOfArraysIteratorWrapperTutor.java"
       ]
     },
     {
       "name": "solution",
       "files": [
-        "h02/Main.java"
+        "h02/ListOfArraysIterator.java",
+        "h02/ListOfArrays.java",
+        "h02/ListOfArraysItem.java",
+        "h02/ElementWithIndex.java",
+        "h02/Main.java",
+        "h02/PublicTests.java",
+        "h02/ListOfArraysIteratorWrapper.java",
+        "h02/ExampleJUnitTest.java"
       ]
     }
   ]

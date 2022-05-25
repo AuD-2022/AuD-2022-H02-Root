@@ -8,7 +8,13 @@ import java.util.NoSuchElementException;
  * @param <T> The generic type of the list that this iterator iterates on.
  */
 public class ListOfArraysIterator<T> {
+    /**
+     * The list that this iterator iterates on.
+     */
     public ListOfArraysItem<T> current;
+    /**
+     * The index of the current item.
+     */
     public int currentIndex;
 
     /**
@@ -34,15 +40,15 @@ public class ListOfArraysIterator<T> {
     /**
      * Returns the next element of this iterator and moves the iterator one element forward.
      *
-     * @return                          The next element.
-     * @throws NoSuchElementException   If there is no next element.
+     * @return The next element.
+     * @throws NoSuchElementException If there is no next element.
      */
     public T next() throws NoSuchElementException {
         //No more elements?
-        if(!hasNext())
+        if (!hasNext())
             throw new NoSuchElementException();
         //Does the iterator have to move forward?
-        while(currentIndex == current.currentNumber) {
+        while (currentIndex == current.currentNumber) {
             current = current.next;
             currentIndex = 0;
         }
@@ -52,13 +58,13 @@ public class ListOfArraysIterator<T> {
     /**
      * Returns whether the list (from the given item onwards) has another element.
      *
-     * @param item  The item of the list to start searching from.
-     * @return      True iff there are no more elements.
+     * @param item The item of the list to start searching from.
+     * @return True iff there are no more elements.
      */
     public boolean hasNoMoreElements(ListOfArraysItem<T> item) {
-        if(item == null)
+        if (item == null)
             return true;
-        if(item.currentNumber != 0)
+        if (item.currentNumber != 0)
             return false;
         return hasNoMoreElements(item.next);
     }

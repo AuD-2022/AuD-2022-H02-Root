@@ -307,6 +307,9 @@ public class ListOfArrays<T> {
         }
     }
 
+    /**
+     * Removes empty items from the list.
+     */
     public void removeEmptyItems() {
         ListOfArraysItem<T> p = head;
         while (p != null) {
