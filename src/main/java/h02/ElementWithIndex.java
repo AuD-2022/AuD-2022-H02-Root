@@ -9,12 +9,12 @@ public class ElementWithIndex<T> {
     /**
      * The element.
      */
-    public T element;
+    private T element;
 
     /**
      * The index.
      */
-    public int index;
+    private int index;
 
     /**
      * Constructs a new ElementWithIndex object with the given element and index.

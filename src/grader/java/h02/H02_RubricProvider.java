@@ -315,122 +315,148 @@ public class H02_RubricProvider implements RubricProvider {
                         .shortDescription("H5: Methode zum Einfügen mehrerer einzelner neuer Elemente")
                         .addChildCriteria(
                             Criterion.builder()
-                                .shortDescription("Punkt 1")
+                                .shortDescription("Die Klasse ElementWithIndex ist vollständig korrekt.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testElementWithIndex")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 2")
+                                .shortDescription("Eine Exception wird geworfen, wenn ein Element mit einem ungültigen Index eingefügt werden soll.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertExceptionWithNegativeIndex")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 3")
+                                .shortDescription("Eine Exception wird geworfen, wenn so viele Elemente hintereinander eingefügt werden sollen, dass das Array zum Zwischenspeichern überfüllt ist.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertExceptionWithTooManyElements")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 4")
+                                .shortDescription("Das einfügen eines einzelnen Elements am Ende funktioniert.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertAtEnd")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 5")
+                                .shortDescription("Das einfügen eines einzelnen Elements am Anfang funktioniert.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertAtBeginning")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 6")
+                                .shortDescription("Das einfügen eines einzelnen Elements in der Mitte funktioniert.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertInMiddle")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 7")
+                                .shortDescription("Das einfügen eines zusammenhängenden Blocks funktioniert korrekt.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertMultipleAsBlock")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 8")
+                                .shortDescription("Das Einfügen mehrerer verstreuter Elemente funktioniert korrekt.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertMultipleAsSpread")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 9")
+                                .shortDescription("Die Abbruchbedingungen funktionieren korrekt.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.ofMethod(
+                                                () -> H5TutorTests.class.getDeclaredMethod("testInsertStopConditions")
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build(),
                             Criterion.builder()
-                                .shortDescription("Punkt 10")
+                                .shortDescription("Die Methode insert() ist vollständig korrekt.")
                                 .grader(
                                     Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H5TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                        .requirePass(
+                                            JUnitTestRef.and(
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testElementWithIndex")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertExceptionWithNegativeIndex")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertExceptionWithTooManyElements")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertAtEnd")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertAtBeginning")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertInMiddle")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertMultipleAsBlock")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertMultipleAsSpread")
+                                                ),
+                                                JUnitTestRef.ofMethod(
+                                                    () -> H5TutorTests.class.getDeclaredMethod("testInsertStopConditions")
+                                                )
+                                            )
+                                        )
                                         .build()
                                 )
                                 .build()

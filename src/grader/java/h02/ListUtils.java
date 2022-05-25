@@ -1,21 +1,17 @@
 package h02;
 
 import org.mockito.Answers;
+import org.opentest4j.AssertionFailedError;
 
-import java.lang.reflect.Executable;
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
 
 public class ListUtils {
 
@@ -120,6 +116,21 @@ public class ListUtils {
 //        FieldHelper.makeNonFinal(arrayLengthField);
         assertDoesNotThrow(() -> FieldHelper.setFinalStatic(arrayLengthField, arrayLength), "cannot overwrite Field ARRAY_LENGTH");
         return arrayLength;
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> ElementWithIndex<T> makeElementWithIndex(T element, int index, boolean stub) {
+        if (!stub) {
+            return assertDoesNotThrow(() -> new ElementWithIndex<>(element, index), "cannot create ElementWithIndex");
+        }
+        ElementWithIndex<T> elementWithIndex = spy(mock(ElementWithIndex.class, Answers.CALLS_REAL_METHODS));
+        doReturn(index).when(elementWithIndex).getIndex();
+        doReturn(element).when(elementWithIndex).getElement();
+        return elementWithIndex;
+    }
+
+    public static <T> ElementWithIndex<T> makeElementWithIndex(T element, int index) {
+        return makeElementWithIndex(element, index, true);
     }
 
     /**
@@ -316,8 +327,24 @@ public class ListUtils {
         return IntStream.range(0, length).boxed().collect(Collectors.toList());
     }
 
-    public static void assertOr(Runnable... assertions) {
-        var failed = new HashMap<Runnable, Throwable>();
+    @FunctionalInterface
+    public interface CheckedRunnable<E extends Exception> extends Runnable {
+
+        @Override
+        default void run() throws RuntimeException {
+            try {
+                runThrows();
+            } catch (Exception ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        void runThrows() throws E;
+
+    }
+
+    public static void assertOr(CheckedRunnable<Exception>... assertions) {
+        var failed = new HashMap<CheckedRunnable<Exception>, Throwable>();
         for (var assertion : assertions) {
             try {
                 assertion.run();
@@ -331,11 +358,23 @@ public class ListUtils {
     }
 
     public static void assertEqualsOneOf(List<Object> expected, Object actual, String message) {
-        List<Runnable> assertions = new ArrayList<>();
+        var failed = new HashSet<Throwable>();
         for (Object expectedElement : expected) {
-            assertions.add(() -> assertEquals(expectedElement, actual, message));
+            try {
+                assertEquals(expectedElement, actual, message);
+                break;
+            } catch (Throwable e) {
+                failed.add(e);
+            }
         }
-        assertOr(assertions.toArray(new Runnable[0]));
+        if (!failed.isEmpty()) {
+            message += String.format(
+                "\nExpected one of: [%s] but got: <%s>",
+                expected.stream().map(x -> String.format("<%s>", x)).collect(Collectors.joining(", ")),
+                actual
+            );
+            throw new AssertionFailedError(message);
+        }
     }
 
     public static void assertEqualsOneOf(List<Object> expected, Object actual) {
