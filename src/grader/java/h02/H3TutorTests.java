@@ -26,9 +26,9 @@ public class H3TutorTests {
     public void testInsertExceptions() {
         var list = toList(List.of("A", "B", "C"));
         var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(List.of("A"), -1), "Inserting at negative index should throw IndexOutOfBoundsException");
-        assertEquals("Index out of range: -1", ex1.getMessage(), "Exception message is not correct");
+        assertEqualsOneOf(List.of("Index out of range: -1", "-1"), ex1.getMessage(), "Exception message is not correct");
         var ex2 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(List.of("A"), 4), "Inserting at index 4 should throw IndexOutOfBoundsException when the list has 3 elements");
-        assertEquals("Index out of range: 4", ex2.getMessage(), "Exception message is not correct");
+        assertEqualsOneOf(List.of("Index out of range: 4", "4"), ex2.getMessage(), "Exception message is not correct");
     }
 
     // test insert at the end of the list

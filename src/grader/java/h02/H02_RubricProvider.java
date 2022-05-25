@@ -189,7 +189,7 @@ public class H02_RubricProvider implements RubricProvider {
                                 .requirePass(
                                     JUnitTestRef.ofMethod(
                                         () -> H3TutorTests.class.getDeclaredMethod("testInsertInMiddle")
-                                        )
+                                    )
                                 )
                                 .build()
                         )
@@ -198,11 +198,11 @@ public class H02_RubricProvider implements RubricProvider {
                         .shortDescription("Das Einfügen in der Mitte der Liste funktioniert korrekt, wenn neue Arrays erzeugt werden müssen.")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H3TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H3TutorTests.class.getDeclaredMethod("testInsertInMiddleWithMoreThan256Elements")
+                                    )
+                                )
                                 .build()
                         )
                         .build()
@@ -214,207 +214,225 @@ public class H02_RubricProvider implements RubricProvider {
                 .shortDescription("H4: Methode zum Extrahieren ganzer Blöcke")
                 .addChildCriteria(
                     Criterion.builder()
-                        .shortDescription("Punkt 1")
+                        .shortDescription("Entsprechende Exceptions werden geworfen, wenn i oder j ungültig sind.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractWithEmptyList")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Löschen eines einzelnen Elements funktioniert korrekt am Ende der Liste.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractWithOneElement")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Löschen mehrerer Elemente am Ende der Liste funktioniert korrekt.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractWithMultipleElements")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Löschen aller Elemente der Liste funktioniert korrekt.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractWithAllElements")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Löschen in der Mitte der Liste funktioniert korrekt mit kleinen Listen.")
                         .grader(
                             Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H4TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
                                 .build()
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Punkt 2")
+                        .shortDescription("Löschen in der Mitte der Liste funktioniert korrekt mit großen Listen. (>256 Elemente)")
                         .grader(
                             Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H4TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
                                 .build()
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Punkt 3")
+                        .shortDescription("Die Rückgabeliste ist korrekt.")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractReturnValue")
+                                    )
+                                )
                                 .build()
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Punkt 4")
+                        .shortDescription("Die Methode extract() ist vollständig korrekt.")
                         .grader(
                             Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 5")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 6")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 7")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 8")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 9")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 10")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractCombined")
+                                    )
+                                )
                                 .build()
                         )
                         .build()
                 )
-                .build()
-        )
-        .addChildCriteria(
-            Criterion.builder()
-                .shortDescription("H5: Methode zum Einfügen mehrerer einzelner neuer Elemente")
                 .addChildCriteria(
                     Criterion.builder()
-                        .shortDescription("Punkt 1")
-                        .grader(
-                            Grader.testAwareBuilder()
+                        .shortDescription("H5: Methode zum Einfügen mehrerer einzelner neuer Elemente")
+                        .addChildCriteria(
+                            Criterion.builder()
+                                .shortDescription("Punkt 1")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 2")
-                        .grader(
-                            Grader.testAwareBuilder()
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 2")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 3")
-                        .grader(
-                            Grader.testAwareBuilder()
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 3")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 4")
-                        .grader(
-                            Grader.testAwareBuilder()
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 4")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 5")
-                        .grader(
-                            Grader.testAwareBuilder()
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 5")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 6")
-                        .grader(
-                            Grader.testAwareBuilder()
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 6")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 7")
-                        .grader(
-                            Grader.testAwareBuilder()
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 7")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 8")
-                        .grader(
-                            Grader.testAwareBuilder()
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 8")
+                                .grader(
+                                    Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
 //                                )
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 9")
+                                .grader(
+                                    Grader.testAwareBuilder()
+//                                .requirePass(
+//                                    JUnitTestRef.ofMethod(
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
+//                                )
+                                        .build()
+                                )
+                                .build(),
+                            Criterion.builder()
+                                .shortDescription("Punkt 10")
+                                .grader(
+                                    Grader.testAwareBuilder()
+//                                .requirePass(
+//                                    JUnitTestRef.ofMethod(
+//                                        () -> H5TutorTests.class.getDeclaredMethod("")
+//                                        )
+//                                )
+                                        .build()
+                                )
                                 .build()
                         )
                         .build()

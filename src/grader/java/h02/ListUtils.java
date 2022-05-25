@@ -2,11 +2,15 @@ package h02;
 
 import org.mockito.Answers;
 
+import java.lang.reflect.Executable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -310,5 +314,31 @@ public class ListUtils {
 
     public static List<Integer> intList(int length) {
         return IntStream.range(0, length).boxed().collect(Collectors.toList());
+    }
+
+    public static void assertOr(Runnable... assertions) {
+        var failed = new HashMap<Runnable, Throwable>();
+        for (var assertion : assertions) {
+            try {
+                assertion.run();
+            } catch (Throwable e) {
+                failed.put(assertion, e);
+            }
+        }
+        if (!failed.isEmpty()) {
+            var message = String.format("All %s assertions failed:\n %s", failed.size(), failed.entrySet().stream().map(e -> e.getKey().toString() + ": " + e.getValue().getMessage()).collect(Collectors.joining("\n")));
+        }
+    }
+
+    public static void assertEqualsOneOf(List<Object> expected, Object actual, String message) {
+        List<Runnable> assertions = new ArrayList<>();
+        for (Object expectedElement : expected) {
+            assertions.add(() -> assertEquals(expectedElement, actual, message));
+        }
+        assertOr(assertions.toArray(new Runnable[0]));
+    }
+
+    public static void assertEqualsOneOf(List<Object> expected, Object actual) {
+        assertEqualsOneOf(expected, actual, (String) null);
     }
 }
