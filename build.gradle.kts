@@ -33,9 +33,9 @@ dependencies {
     "graderCompileOnly"("org.sourcegrade:jagr-launcher:0.4.0") {
         exclude("org.jetbrains", "annotations")
     }
-    "graderImplementation"("org.ow2.asm:asm-util:9.3")
-    "graderImplementation"("com.google.guava:guava:31.1-jre")
-    "graderImplementation"("org.mockito:mockito-inline:4.5.1")
+//    "graderImplementation"("org.ow2.asm:asm-util:9.3")
+//    "graderImplementation"("com.google.guava:guava:31.1-jre")
+    "graderImplementation"("org.mockito:mockito-core:4.5.1")
     "testImplementation"("org.junit.jupiter:junit-jupiter-api:5.8.2")
 }
 
@@ -110,8 +110,8 @@ tasks {
     }
     withType<JavaCompile> {
         options.encoding = "UTF-8"
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+        sourceCompatibility = "18"
+        targetCompatibility = "18"
     }
     jar {
         enabled = false

@@ -36,9 +36,10 @@ public class ListUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> ListOfArraysItem<T> head(ListOfArrays<T> list) {
-        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
-        headField.setAccessible(true);
-        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) headField.get(list), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
+//        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
+//        headField.setAccessible(true);
+//        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) headField.get(list), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
+        return list.head;
     }
 
     /**
@@ -50,9 +51,10 @@ public class ListUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> ListOfArraysItem<T> tail(ListOfArrays<T> list) {
-        var tailField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("tail"), "cannot access List tail");
-        tailField.setAccessible(true);
-        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) tailField.get(list), "cannot access List tail");
+//        var tailField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("tail"), "cannot access List tail");
+//        tailField.setAccessible(true);
+//        return assertDoesNotThrow(() -> (ListOfArraysItem<T>) tailField.get(list), "cannot access List tail");
+        return list.tail;
     }
 
     /**
@@ -62,9 +64,10 @@ public class ListUtils {
      * @return the max length of each array
      */
     public static int getArrayLength(ListOfArrays<?> list) {
-        var arrayLengthField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("ARRAY_LENGTH"), "cannot access Field ARRAY_LENGTH");
-        arrayLengthField.setAccessible(true);
-        return assertDoesNotThrow(() -> (int) arrayLengthField.get(list), "cannot access Field ARRAY_LENGTH");
+//        var arrayLengthField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("ARRAY_LENGTH"), "cannot access Field ARRAY_LENGTH");
+//        arrayLengthField.setAccessible(true);
+//        return assertDoesNotThrow(() -> (int) arrayLengthField.get(list), "cannot access Field ARRAY_LENGTH");
+        return ListOfArrays.ARRAY_LENGTH;
     }
 
     /**
@@ -76,9 +79,10 @@ public class ListUtils {
      * @return The new head of the list.
      */
     public static <T> ListOfArraysItem<T> setHead(ListOfArrays<T> list, ListOfArraysItem<T> head) {
-        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
-        headField.setAccessible(true);
-        assertDoesNotThrow(() -> headField.set(list, head), "cannot set List head");
+//        var headField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("head"), "cannot access List head. Available fields: " + Arrays.toString(list.getClass().getDeclaredFields()));
+//        headField.setAccessible(true);
+//        assertDoesNotThrow(() -> headField.set(list, head), "cannot set List head");
+        list.head = head;
         return head;
     }
 
@@ -91,9 +95,10 @@ public class ListUtils {
      * @return The new tail of the list.
      */
     public static <T> ListOfArraysItem<T> setTail(ListOfArrays<T> list, ListOfArraysItem<T> tail) {
-        var tailField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("tail"), "cannot access List tail");
-        tailField.setAccessible(true);
-        assertDoesNotThrow(() -> tailField.set(list, tail), "cannot set List tail");
+//        var tailField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("tail"), "cannot access List tail");
+//        tailField.setAccessible(true);
+//        assertDoesNotThrow(() -> tailField.set(list, tail), "cannot set List tail");
+        list.tail = tail;
         return tail;
     }
 
@@ -119,11 +124,12 @@ public class ListUtils {
      * @return the new value of the field
      */
     public static int setArrayLength(ListOfArrays<?> list, int arrayLength) {
-        var arrayLengthField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("ARRAY_LENGTH"), "cannot access Field ARRAY_LENGTH");
-//        arrayLengthField.setAccessible(true);
-        // get modifiers to make field non-final
-//        FieldHelper.makeNonFinal(arrayLengthField);
-        assertDoesNotThrow(() -> FieldHelper.setFinalStatic(arrayLengthField, arrayLength), "cannot overwrite Field ARRAY_LENGTH");
+//        var arrayLengthField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("ARRAY_LENGTH"), "cannot access Field ARRAY_LENGTH");
+////        arrayLengthField.setAccessible(true);
+//        // get modifiers to make field non-final
+////        FieldHelper.makeNonFinal(arrayLengthField);
+//        assertDoesNotThrow(() -> FieldHelper.setFinalStatic(arrayLengthField, arrayLength), "cannot overwrite Field ARRAY_LENGTH");
+        ListOfArrays.ARRAY_LENGTH = arrayLength;
         return arrayLength;
     }
 
@@ -168,8 +174,8 @@ public class ListUtils {
      */
     @SuppressWarnings("unchecked")
     public static <T> ListOfArrays<T> toList(List<T> list) {
-        ListOfArrays<T> result = spy(mock(ListOfArrays.class, Answers.RETURNS_SELF));
-//        setArrayLength(result, 256);
+        ListOfArrays<T> result = spy(mock(ListOfArrays.class, Answers.CALLS_REAL_METHODS));
+        setArrayLength(result, 256);
         var ht = toHeadTail(list);
         //Set head and tail
         setHead(result, ht.head);

@@ -7,6 +7,7 @@
     {
       "name": "grader",
       "files": [
+        "h02/AccessTransformer.java",
         "h02/FieldHelper.java",
         "h02/H5TutorTests.java",
         "h02/H4TutorTests.java",

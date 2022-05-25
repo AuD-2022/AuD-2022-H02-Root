@@ -1,6 +1,7 @@
 package h02;
 
 import org.sourcegrade.jagr.api.rubric.*;
+import org.sourcegrade.jagr.api.testing.RubricConfiguration;
 
 @RubricForSubmission("h02")
 public class H02_RubricProvider implements RubricProvider {
@@ -534,5 +535,10 @@ public class H02_RubricProvider implements RubricProvider {
     @Override
     public Rubric getRubric() {
         return RUBRIC;
+    }
+
+    @Override
+    public void configure(RubricConfiguration configuration) {
+        configuration.addTransformer(new AccessTransformer());
     }
 }
