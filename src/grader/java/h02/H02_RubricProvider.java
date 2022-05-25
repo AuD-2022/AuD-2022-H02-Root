@@ -135,71 +135,73 @@ public class H02_RubricProvider implements RubricProvider {
                 .shortDescription("H3: Methode zum Einfügen einer Sequenz im Block in eine Arrayliste")
                 .addChildCriteria(
                     Criterion.builder()
-                        .shortDescription("Punkt 1")
+                        .shortDescription("Die Liste bleibt unverändert, wenn eine leere Collection übergeben wird.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H3TutorTests.class.getDeclaredMethod("testInsertEmptyList")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Eine entsprechende Exception wird geworfen, wenn der übergebene Index ungültig ist.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H3TutorTests.class.getDeclaredMethod("testInsertExceptions")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Einfügen ans Ende der Liste (ohne dass Elemente verschoben werden müssen) funktioniert korrekt mit wenigen Elementen.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H3TutorTests.class.getDeclaredMethod("testInsertAtEnd")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Einfügen ans Ende der Liste (ohne dass Elemente verschoben werden müssen) funktioniert korrekt mit > 256 Elementen.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H3TutorTests.class.getDeclaredMethod("testInsertAtEndWithMoreThan256Elements")
+                                    )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Einfügen in der Mitte der Liste funktioniert korrekt, wenn keine neuen Arrays erzeugt werden müssen.")
+                        .grader(
+                            Grader.testAwareBuilder()
+                                .requirePass(
+                                    JUnitTestRef.ofMethod(
+                                        () -> H3TutorTests.class.getDeclaredMethod("testInsertInMiddle")
+                                        )
+                                )
+                                .build()
+                        )
+                        .build(),
+                    Criterion.builder()
+                        .shortDescription("Das Einfügen in der Mitte der Liste funktioniert korrekt, wenn neue Arrays erzeugt werden müssen.")
                         .grader(
                             Grader.testAwareBuilder()
 //                                .requirePass(
 //                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod("")
+//                                        () -> H3TutorTests.class.getDeclaredMethod("")
 //                                        )
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 2")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 3")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 4")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod("")
-//                                        )
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 5")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
-//                                )
-                                .build()
-                        )
-                        .build(),
-                    Criterion.builder()
-                        .shortDescription("Punkt 6")
-                        .grader(
-                            Grader.testAwareBuilder()
-//                                .requirePass(
-//                                    JUnitTestRef.ofMethod(
-//                                        () -> H1TutorTests.class.getDeclaredMethod(""))
 //                                )
                                 .build()
                         )

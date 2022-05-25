@@ -5,6 +5,7 @@ import org.mockito.Answers;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -110,7 +111,7 @@ public class ListUtils {
      */
     public static int setArrayLength(ListOfArrays<?> list, int arrayLength) {
         var arrayLengthField = assertDoesNotThrow(() -> list.getClass().getDeclaredField("ARRAY_LENGTH"), "cannot access Field ARRAY_LENGTH");
-        arrayLengthField.setAccessible(true);
+//        arrayLengthField.setAccessible(true);
         // get modifiers to make field non-final
 //        FieldHelper.makeNonFinal(arrayLengthField);
         assertDoesNotThrow(() -> FieldHelper.setFinalStatic(arrayLengthField, arrayLength), "cannot overwrite Field ARRAY_LENGTH");
@@ -127,7 +128,7 @@ public class ListUtils {
     @SuppressWarnings("unchecked")
     public static <T> ListOfArrays<T> toList(List<T> list) {
         ListOfArrays<T> result = mock(ListOfArrays.class, Answers.CALLS_REAL_METHODS);
-        setArrayLength(result, 256);
+//        setArrayLength(result, 256);
         var ht = toHeadTail(list);
         //Set head and tail
         setHead(result, ht.head);
@@ -246,12 +247,15 @@ public class ListUtils {
         } else {
             assertNotNull(tail); // tail must not be null
         }
+//        var visited = new HashSet<ListOfArraysItem<?>>();
         for (int i = 0; head != null; head = head.next, i++) {  // iterate over list
             assertItemArrayIsBuildCorrectly(head);
             if (head.next == null) {
                 assertEquals(tail, head, "Tail is not the last element");  // check if tail is the same as head
             }
+//            visited.add(head);
         }
+//        assertTrue(visited.contains(tail), "Detached List Tail");  // check if tail is in the list
     }
 
     private static void assertItemArrayIsBuildCorrectly(ListOfArraysItem<?> element) {
@@ -302,5 +306,9 @@ public class ListUtils {
      */
     public static List<String> stringList(int length) {
         return IntStream.range(0, length).mapToObj(i -> Character.toString((char) i)).collect(Collectors.toList());
+    }
+
+    public static List<Integer> intList(int length) {
+        return IntStream.range(0, length).boxed().collect(Collectors.toList());
     }
 }

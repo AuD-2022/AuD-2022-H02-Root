@@ -100,14 +100,14 @@ public class ListOfArrays<T> {
                 p.array[p.currentNumber++] = iterator.next();
             }
             if(!iterator.hasNext()) return;
+            //Special case: Item is null -> Add new item to insert to later on
+            if(p.next == null) {
+                p.next = tail = new ListOfArraysItem<>();
+                p.next.array = (T[]) new Object[ARRAY_LENGTH];
+            }
             //Go to next item
             p = p.next;
             i = 0;
-            //Special case: Item is null -> Add new item to insert to later on
-            if(p == null) {
-                p = tail = new ListOfArraysItem<>();
-                p.array = (T[]) new Object[ARRAY_LENGTH];
-            }
         }
         T[] removed = (T[]) new Object[p.currentNumber - i];
         int rindex = -1;
