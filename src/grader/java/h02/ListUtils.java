@@ -110,7 +110,7 @@ public class ListUtils {
      * @param <T>  The type of the list.
      * @return The new head and tail of the list.
      */
-    public static <T> HeadAndTail<T> setHeadAndTail(ListOfArrays<T> list, HeadAndTail ht) {
+    public static <T> HeadAndTail<T> setHeadAndTail(ListOfArrays<T> list, HeadAndTail<T> ht) {
         setHead(list, ht.head);
         setTail(list, ht.tail);
         return ht;
@@ -301,13 +301,14 @@ public class ListUtils {
         } else {
             assertNotNull(tail); // tail must not be null
         }
-//        var visited = new HashSet<ListOfArraysItem<?>>();
+        var visited = new HashSet<ListOfArraysItem<?>>();
         for (int i = 0; head != null; head = head.next, i++) {  // iterate over list
+            assertFalse(visited.contains(head), "List contains duplicate item. Aborting to prevent infinite loop.");
             assertItemArrayIsBuildCorrectly(head);
             if (head.next == null) {
                 assertEquals(tail, head, "Tail is not the last element");  // check if tail is the same as head
             }
-//            visited.add(head);
+            visited.add(head);
         }
 //        assertTrue(visited.contains(tail), "Detached List Tail");  // check if tail is in the list
     }
@@ -342,6 +343,7 @@ public class ListUtils {
      * @param actual   The actual Lists.
      * @param <T>      The type of the Lists.
      */
+    @SafeVarargs
     public static <T> void assertSameElements(List<T> expected, List<T>... actual) {
         var expectedList = new ArrayList<T>(expected);
         for (var actualList : actual) {
