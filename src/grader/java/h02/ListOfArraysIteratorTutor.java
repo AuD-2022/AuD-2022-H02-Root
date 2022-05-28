@@ -37,7 +37,7 @@ public class ListOfArraysIteratorTutor<T> {
      */
     public boolean hasNext() {
         //Returns false iff the given sequence was null or the index has reached the maximum of the current element and the next element does not exist or there are no more elements
-        return !(current == null || (!hasMoreEntries(current.array, currentIndex) && hasNoMoreElements(current.next, new HashSet<>())));
+        return !(current == null || (!hasMoreEntries(current.array, currentIndex) && hasNoMoreElements(current, new HashSet<>(), currentIndex)));
     }
 
     /**
@@ -91,14 +91,14 @@ public class ListOfArraysIteratorTutor<T> {
      * @param item The item of the list to start searching from.
      * @return True iff there are no more elements.
      */
-    public boolean hasNoMoreElements(ListOfArraysItem<T> item, HashSet<ListOfArraysItem<T>> visitedRecursive) {
+    public boolean hasNoMoreElements(ListOfArraysItem<T> item, HashSet<ListOfArraysItem<T>> visitedRecursive, int index) {
         assertFalse(visited.contains(item) || visitedRecursive.contains(item), "List contains duplicate item. Aborting to prevent infinite loop.");
         if (item == null)
             return true;
-        if (hasMoreEntries(item.array, currentIndex)) {
+        if (hasMoreEntries(item.array, index)) {
             return false;
         }
         visitedRecursive.add(item);
-        return hasNoMoreElements(item.next, visitedRecursive);
+        return hasNoMoreElements(item.next, visitedRecursive, 0);
     }
 }
