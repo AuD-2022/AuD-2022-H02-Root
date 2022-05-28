@@ -18,7 +18,8 @@
         "h02/H1TutorTests.java",
         "h02/ListOfArraysWrapper.java",
         "h02/H3TutorTests.java",
-        "h02/ListOfArraysIteratorWrapperTutor.java"
+        "h02/ListOfArraysIteratorWrapperTutor.java",
+        "h02/TestConstants.java"
       ]
     },
     {

@@ -145,7 +145,7 @@ public class ListUtils {
     @SuppressWarnings("unchecked")
     public static <T> ElementWithIndex<T> makeElementWithIndex(T element, int index, boolean stub) {
         if (!stub) {
-            return assertDoesNotThrow(() -> new ElementWithIndex<>(element, index), "cannot create ElementWithIndex");
+            return assertDoesNotThrow(() -> new ElementWithIndex<>(element, index), "Cannot create ElementWithIndex.");
         }
         ElementWithIndex<T> elementWithIndex = spy(mock(ElementWithIndex.class, Answers.CALLS_REAL_METHODS));
         doReturn(index).when(elementWithIndex).getIndex();
@@ -291,22 +291,25 @@ public class ListUtils {
      * </ul>
      * <br>
      *
-     * @param list The List to check.
+     * @param list               The List to check.
+     * @param checkCurrentNumber if true, the currentNumber of each element is checked.
+     * @param checkGaps          if true, the gaps in the array of each element are checked.
+     * @param checkTail          if true, the tail of the list is checked.
      */
-    public static void assertListIsBuildCorrectly(ListOfArrays<?> list) {
+    public static void assertListIsBuildCorrectly(ListOfArrays<?> list, boolean checkCurrentNumber, boolean checkGaps, boolean checkTail) {
         var head = head(list);
         var tail = tail(list);
         if (head == null) {
-            assertNull(tail, "Head is null, but tail is not null");  // if head is null, then tail must be null
+            assertNull(tail, "Head is null, but tail is not null.");  // if head is null, then tail must be null
         } else {
             assertNotNull(tail); // tail must not be null
         }
         var visited = new HashSet<ListOfArraysItem<?>>();
         for (int i = 0; head != null; head = head.next, i++) {  // iterate over list
             assertFalse(visited.contains(head), "List contains duplicate item. Aborting to prevent infinite loop.");
-            assertItemArrayIsBuildCorrectly(head);
-            if (head.next == null) {
-                assertEquals(tail, head, "Tail is not the last element");  // check if tail is the same as head
+            assertItemArrayIsBuildCorrectly(head, checkCurrentNumber, checkGaps);
+            if (head.next == null && checkTail) {
+                assertEquals(tail, head, "Tail is not the last element.");  // check if tail is the same as head
             }
             visited.add(head);
         }
@@ -314,11 +317,41 @@ public class ListUtils {
     }
 
     /**
+     * Asserts that the given List is Build Correctly.
+     * <br>
+     * A List is build correctly if it fulfills the following conditions:  <ul>
+     * <li>The first element is the head of the list.</li>
+     * <li>The last element is the tail of the list.</li>
+     * <li>the currentNumber of each element is the number of the elements in it's array.</li>
+     * <li>there are exactly currentNumber elements in the array of each element.</li>
+     * <li>there are no gaps in the array of each element.</li>
+     * </ul>
+     * <br>
+     *
+     * @param list The List to check.
+     */
+    public static void assertListIsBuildCorrectly(ListOfArrays<?> list) {
+        assertListIsBuildCorrectly(list, true, true, true);
+    }
+
+    /**
+     * Asserts that the given List is Iterable
+     *
+     * @param list The List to check.
+     */
+    public static void assertListIsIterable(ListOfArrays<?> list) {
+        assertListIsBuildCorrectly(list, false, false, false);
+
+    }
+
+    /**
      * Asserts that the given ListOfArraysItem is Build Correctly.
      *
-     * @param element The ListOfArraysItem to check.
+     * @param element            The ListOfArraysItem to check.
+     * @param checkCurrentNumber if true, the currentNumber of each element is checked.
+     * @param checkGaps          if true, the gaps in the array of each element are checked.
      */
-    private static void assertItemArrayIsBuildCorrectly(ListOfArraysItem<?> element) {
+    private static void assertItemArrayIsBuildCorrectly(ListOfArraysItem<?> element, boolean checkCurrentNumber, boolean checkGaps) {
         assertNotNull(element.array);
         // check that currentNumber is the number of elements in the array
         int actualNumberOfElements = 0;
@@ -326,14 +359,18 @@ public class ListUtils {
             if (element.array[i] != null) {
                 actualNumberOfElements++;
             } else {
-                // check that there are no gaps in the array
-                for (int j = i + 1; j < element.array.length; j++) {
-                    assertNull(element.array[j], "There is a gap in the array of element " + element.currentNumber + " at index " + i);
+                if (checkGaps) {
+                    // check that there are no gaps in the array
+                    for (int j = i + 1; j < element.array.length; j++) {
+                        assertNull(element.array[j], "There is a gap in the array of element " + element.currentNumber + " at index " + i + ".");
+                    }
+                    break;
                 }
-                break;
             }
         }
-        assertEquals(element.currentNumber, actualNumberOfElements, "CurrentNumber is not the correct number of elements in the array");
+        if (checkCurrentNumber) {
+            assertEquals(element.currentNumber, actualNumberOfElements, "CurrentNumber is not the correct number of elements in the array.");
+        }
     }
 
     /**
@@ -348,7 +385,7 @@ public class ListUtils {
         var expectedList = new ArrayList<T>(expected);
         for (var actualList : actual) {
             // assert size
-            assertEquals(expectedList.size(), actualList.size(), "Lists are not of equal size");
+            assertEquals(expectedList.size(), actualList.size(), "Lists are not of equal size.");
             for (int i = 0; i < expectedList.size(); i++) {
                 T expectedElement;
                 T actualElement;
@@ -387,23 +424,18 @@ public class ListUtils {
      * @param message  The message to display if the assertion fails.
      */
     public static void assertEqualsOneOf(List<Object> expected, Object actual, String message) {
-        var failed = new HashSet<Throwable>();
         for (Object expectedElement : expected) {
-            try {
-                assertEquals(expectedElement, actual, message);
-                break;
-            } catch (Throwable e) {
-                failed.add(e);
+            if (actual.equals(expectedElement)) {
+                return;
             }
         }
-        if (!failed.isEmpty()) {
-            message += String.format(
-                "\nExpected one of: [%s] but got: <%s>",
-                expected.stream().map(x -> String.format("<%s>", x)).collect(Collectors.joining(", ")),
-                actual
-            );
-            throw new AssertionFailedError(message);
-        }
+
+        message += String.format(
+            "\nExpected one of: [%s] but got: <%s>.",
+            expected.stream().map(x -> String.format("<%s>", x)).collect(Collectors.joining(", ")),
+            actual
+        );
+        throw new AssertionFailedError(message);
     }
 
     /**

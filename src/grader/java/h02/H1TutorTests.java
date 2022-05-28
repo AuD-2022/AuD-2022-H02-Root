@@ -24,7 +24,7 @@ public class H1TutorTests {
     // Test the constructor of ListOfArraysTutor with an empty string array
     @Test
     public void testListOfArraysConstructor_EmptyList() {
-        var listArray = new String[] {};
+        var listArray = new String[]{};
         ListOfArrays<String> list = new ListOfArrays<>(listArray);
         assertEquals(List.of(), toJavaList(list));
     }
@@ -32,7 +32,7 @@ public class H1TutorTests {
     // single element list
     @Test
     public void testListOfArraysConstructor_SingleElementList() {
-        var listArray = new String[] { "A" };
+        var listArray = new String[]{"A"};
         ListOfArrays<String> list = new ListOfArrays<>(listArray);
         assertEquals(List.of(listArray), toJavaList(list));
     }
@@ -40,7 +40,7 @@ public class H1TutorTests {
     // Test that the Elements of the list are the same as the elements of the argument array
     @Test
     public void testListOfArraysConstructor_SameElements() {
-        var listArray = new String[] { "H", "E", "L", "L", "O" };
+        var listArray = new String[]{"H", "E", "L", "L", "O"};
         ListOfArrays<String> list = new ListOfArrays<>(listArray);
         assertSameElements(List.of(listArray), toJavaList(list));
     }
@@ -48,23 +48,17 @@ public class H1TutorTests {
     // array with more than 256 elements
     @Test
     public void testListOfArraysConstructor_LongList() {
-        var listArray = new String[257];
-        for (int i = 0; i < 257; i++) {
-            listArray[i] = Character.toString((char) i);
-        }
-        ListOfArrays<String> list = new ListOfArrays<>(listArray);
-        assertEquals(List.of(listArray), toJavaList(list));
+        var expected = intList(257);
+        var list = new ListOfArrays<Integer>(expected.toArray(Integer[]::new));
+        assertEquals(expected, toJavaList(list));
     }
 
     // Harder test checking that the list is build correctly
     @Test
     public void testListOfArraysConstructor_CorrectList() {
-        var listArray = new String[4096];
-        for (int i = 0; i < 4096; i++) {
-            listArray[i] = Character.toString((char) i);
-        }
-        ListOfArrays<String> list = new ListOfArrays<>(listArray);
-        assertEquals(List.of(listArray), toJavaList(list));
+        var expected = intList(512);
+        ListOfArrays<Integer> list = new ListOfArrays<>(expected.toArray(Integer[]::new));
+        assertEquals(expected, toJavaList(list));
         assertListIsBuildCorrectly(list);
     }
 }

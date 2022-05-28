@@ -3,12 +3,14 @@ package h02;
 import org.junit.jupiter.api.Test;
 import org.sourcegrade.jagr.api.rubric.TestForSubmission;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
 import static h02.ListUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @TestForSubmission("h02")
 public class H5TutorTests {
     // check Element With Index
@@ -42,9 +44,9 @@ public class H5TutorTests {
         assertEquals("array could not hold elements to be moved", ex1.getMessage(), "Exception message is not correct");
     }
 
-    public <T> void testInsert(List<T> listContent, List<ElementWithIndex<T>> toInsert) {
+    public <T> void testInsert(List<T> listContent, List<ElementWithIndex<T>> toInsert, boolean strict) {
         var list = toList(listContent);
-        var expected = listContent;
+        var expected = new ArrayList<>(listContent);
         var offset = 0;
         for (var e : toInsert) {
             if (offset + e.getIndex() > expected.size()) {
@@ -54,8 +56,8 @@ public class H5TutorTests {
             offset++;
         }
         list.insert(toInsert.iterator());
+        assertListIsBuildCorrectly(list, strict, strict, strict);
         assertEquals(expected, toJavaList(list));
-        assertListIsBuildCorrectly(list);
     }
 
     // Test insert at the end of the list
@@ -64,7 +66,8 @@ public class H5TutorTests {
         testInsert(intList(5),
             List.of(
                 makeElementWithIndex(42, 5)
-            )
+            ),
+            false
         );
     }
 
@@ -74,7 +77,8 @@ public class H5TutorTests {
         testInsert(intList(5),
             List.of(
                 makeElementWithIndex(42, 0)
-            )
+            ),
+            false
         );
     }
 
@@ -84,7 +88,8 @@ public class H5TutorTests {
         testInsert(intList(5),
             List.of(
                 makeElementWithIndex(42, 2)
-            )
+            ),
+            false
         );
     }
 
@@ -98,7 +103,8 @@ public class H5TutorTests {
                 makeElementWithIndex(45, 1),
                 makeElementWithIndex(46, 1),
                 makeElementWithIndex(47, 1)
-            )
+            ),
+            false
         );
     }
 
@@ -112,7 +118,8 @@ public class H5TutorTests {
                 makeElementWithIndex(45, 5),
                 makeElementWithIndex(46, 5),
                 makeElementWithIndex(47, 6)
-            )
+            ),
+            false
         );
     }
 
@@ -126,7 +133,26 @@ public class H5TutorTests {
                 makeElementWithIndex(44, 0),
                 makeElementWithIndex(46, 0),
                 makeElementWithIndex(47, 0)
-            )
+            ),
+            false
+        );
+    }
+
+    @Test
+    public void testInsertExample() {
+        testInsert(List.of("a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n"),
+            List.of(
+                makeElementWithIndex("r", 1),
+                makeElementWithIndex("s", 2),
+                makeElementWithIndex("t", 1),
+                makeElementWithIndex("u", 2),
+                makeElementWithIndex("v", 0),
+                makeElementWithIndex("w", 3),
+                makeElementWithIndex("x", 4),
+                makeElementWithIndex("y", 2),
+                makeElementWithIndex("z", 1)
+            ),
+            true
         );
     }
 }

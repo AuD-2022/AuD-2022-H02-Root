@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import static h02.ListUtils.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+
 @TestForSubmission("h02")
 public class H4TutorTests {
     // test exceptions
@@ -23,16 +24,16 @@ public class H4TutorTests {
         assertEquals("3 is greater than 2", ex2.getMessage(), "Exception message is not correct");
     }
 
-    public void testExtract(int i, int j, int listLength, boolean checkList, boolean checkResult) {
+    public void testExtract(int i, int j, int listLength, boolean checkList, boolean checkResult, boolean strict) {
         var listContent = intList(listLength);
         var list = toList(listContent);
         var result = list.extract(i, j);
         if (checkList) {
-            assertListIsBuildCorrectly(list);
+            assertListIsBuildCorrectly(list, strict, strict, strict);
             assertEquals(listContent.stream().limit(j + 1).skip(i).toList(), toJavaList(result), "Extracted list is not correct");
         }
         if (checkResult) {
-            assertListIsBuildCorrectly(result);
+            assertListIsBuildCorrectly(result, strict, strict, strict);
             assertEquals(Stream.concat(listContent.stream().limit(i), listContent.stream().skip(j + 1)).toList(), toJavaList(list), "Modified list is not correct");
         }
     }
@@ -40,50 +41,50 @@ public class H4TutorTests {
     // test extract with one element
     @Test
     public void testExtractWithOneElement() {
-        testExtract(13, 13, 14, true, false);
+        testExtract(13, 13, 14, true, false, false);
     }
 
 
     // test extract with multiple elements
     @Test
     public void testExtractWithMultipleElements() {
-        testExtract(3, 13, 14, true, false);
+        testExtract(3, 13, 14, true, false, false);
     }
 
     // test extract with all elements
     @Test
     public void testExtractWithAllElements() {
-        testExtract(0, 13, 14, true, false);
+        testExtract(0, 13, 14, true, false, false);
     }
 
     // test extract with multiple elements in the middle
     @Test
     public void testExtractWithMultipleElementsInTheMiddle() {
-        testExtract(3, 7, 14, true, false);
+        testExtract(3, 7, 14, true, false, false);
     }
 
     // test extract with more than 256 elements in the middle
     @Test
     public void testExtractWithMoreThan256ElementsInTheMiddle() {
-        testExtract(3, 7, 257, true, false);
+        testExtract(3, 7, 257, true, false, false);
     }
 
     // test return value
     @Test
     public void testExtractReturnValue() {
-        testExtract(3, 7, 14, false, false);
+        testExtract(3, 7, 14, false, true, false);
     }
 
     // combined tests
     @Test
     public void testExtractCombined() {
         // one element
-        testExtract(13, 13, 14, true, true);
+        testExtract(13, 13, 14, true, true, true);
         // multiple elements
-        testExtract(3, 13, 14, true, true);
+        testExtract(3, 13, 14, true, true, true);
         // middle
-        testExtract(3, 7, 14, true, true);
+        testExtract(3, 7, 14, true, true, true);
         // all
-        testExtract(0, 1024, 1025, true, true);
+        testExtract(0, 1024, 1025, true, true, true);
     }
 }
