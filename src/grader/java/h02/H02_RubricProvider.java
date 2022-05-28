@@ -15,11 +15,11 @@ public class H02_RubricProvider implements RubricProvider {
         .title("H02")
         .addChildCriteria(
             Criterion.builder()
-                .shortDescription("H1: Liste von Arrays")
+                .shortDescription("H1 | Liste von Arrays")
                 .addChildCriteria(
                     Criterion.builder()
                         .shortDescription(
-                            "Der Konstruktor der Klasse ListOfArrays erzeugt eine leere Liste, wenn ein leeres Array oder null als Argument übergeben wird.")
+                            "Der Konstruktor der Klasse ListOfArrays erzeugt eine leere Liste, wenn ein leeres Array oder [[[null]]] als Argument übergeben wird.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -101,7 +101,7 @@ public class H02_RubricProvider implements RubricProvider {
         )
         .addChildCriteria(
             Criterion.builder()
-                .shortDescription("H2: Iterator-Klasse")
+                .shortDescription("H2 | Iterator-Klasse")
                 .addChildCriteria(
                     Criterion.builder()
                         .shortDescription("Die Methode hasNext() funktioniert korrekt (für kleine Listen).")
@@ -161,7 +161,7 @@ public class H02_RubricProvider implements RubricProvider {
         )
         .addChildCriteria(
             Criterion.builder()
-                .shortDescription("H3: Methode zum Einfügen einer Sequenz im Block in eine Arrayliste")
+                .shortDescription("H3 | Methode zum Einfügen einer Sequenz im Block in eine Arrayliste")
                 .addChildCriteria(
                     Criterion.builder()
                         .shortDescription("Die Liste bleibt unverändert, wenn eine leere Collection übergeben wird.")
@@ -256,7 +256,7 @@ public class H02_RubricProvider implements RubricProvider {
         )
         .addChildCriteria(
             Criterion.builder()
-                .shortDescription("H4: Methode zum Extrahieren ganzer Blöcke")
+                .shortDescription("H4 | Methode zum Extrahieren ganzer Blöcke")
                 .addChildCriteria(
                     Criterion.builder()
                         .shortDescription("Entsprechende Exceptions werden geworfen, wenn i oder j ungültig sind.")
@@ -377,7 +377,7 @@ public class H02_RubricProvider implements RubricProvider {
         )
         .addChildCriteria(
             Criterion.builder()
-                .shortDescription("H5: Methode zum Einfügen mehrerer einzelner neuer Elemente")
+                .shortDescription("H5 | Methode zum Einfügen mehrerer einzelner neuer Elemente")
                 .addChildCriteria(
                     Criterion.builder()
                         .shortDescription("Die Klasse ElementWithIndex ist vollständig korrekt.")
