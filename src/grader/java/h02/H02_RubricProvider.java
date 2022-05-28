@@ -1,6 +1,11 @@
 package h02;
 
-import org.sourcegrade.jagr.api.rubric.*;
+import org.sourcegrade.jagr.api.rubric.Criterion;
+import org.sourcegrade.jagr.api.rubric.Grader;
+import org.sourcegrade.jagr.api.rubric.JUnitTestRef;
+import org.sourcegrade.jagr.api.rubric.Rubric;
+import org.sourcegrade.jagr.api.rubric.RubricForSubmission;
+import org.sourcegrade.jagr.api.rubric.RubricProvider;
 import org.sourcegrade.jagr.api.testing.RubricConfiguration;
 
 @RubricForSubmission("h02")
@@ -13,7 +18,8 @@ public class H02_RubricProvider implements RubricProvider {
                 .shortDescription("H1: Liste von Arrays")
                 .addChildCriteria(
                     Criterion.builder()
-                        .shortDescription("Der Konstruktor der Klasse ListOfArrays erzeugt eine leere Liste, wenn ein leeres Array oder null als Argument übergeben wird.")
+                        .shortDescription(
+                            "Der Konstruktor der Klasse ListOfArrays erzeugt eine leere Liste, wenn ein leeres Array oder null als Argument übergeben wird.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -32,12 +38,14 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Die Erzeugte Liste enthält die gewünschten Einträge, wenn ein Array mit einem Element übergeben wird.")
+                        .shortDescription(
+                            "Die Erzeugte Liste enthält die gewünschten Einträge, wenn ein Array mit einem Element übergeben wird.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
                                     JUnitTestRef.ofMethod(
-                                        () -> H1TutorTests.class.getDeclaredMethod("testListOfArraysConstructor_SingleElementList")
+                                        () -> H1TutorTests.class.getDeclaredMethod(
+                                            "testListOfArraysConstructor_SingleElementList")
                                     )
                                 )
                                 .pointsFailedMin()
@@ -46,7 +54,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Die Erzeugte Liste enthält die gewünschten Einträge, wenn ein Array mit mehr als 256 Elementen übergeben wird.")
+                        .shortDescription(
+                            "Die Erzeugte Liste enthält die gewünschten Einträge, wenn ein Array mit mehr als 256 Elementen übergeben wird.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -114,7 +123,8 @@ public class H02_RubricProvider implements RubricProvider {
                             Grader.testAwareBuilder()
                                 .requirePass(
                                     JUnitTestRef.ofMethod(
-                                        () -> H2TutorTests.class.getDeclaredMethod("test_next_emptyList_throwsNoSuchElementException")
+                                        () -> H2TutorTests.class.getDeclaredMethod(
+                                            "test_next_emptyList_throwsNoSuchElementException")
                                     )
                                 )
                                 .pointsFailedMin()
@@ -123,7 +133,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Die Klasse ListOfArraysIterator sowie die Methode iterator() der Klasse ListOfArrays sind vollständig korrekt.")
+                        .shortDescription(
+                            "Die Klasse ListOfArraysIterator sowie die Methode iterator() der Klasse ListOfArrays sind vollständig korrekt.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -132,7 +143,8 @@ public class H02_RubricProvider implements RubricProvider {
                                             () -> H2TutorTests.class.getDeclaredMethod("test_hasNext_emptyList_returnsFalse")
                                         ),
                                         JUnitTestRef.ofMethod(
-                                            () -> H2TutorTests.class.getDeclaredMethod("test_next_emptyList_throwsNoSuchElementException")
+                                            () -> H2TutorTests.class.getDeclaredMethod(
+                                                "test_next_emptyList_throwsNoSuchElementException")
                                         ),
                                         JUnitTestRef.ofMethod(
                                             () -> H2TutorTests.class.getDeclaredMethod("test_iterator_combined")
@@ -180,7 +192,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Einfügen ans Ende der Liste (ohne dass Elemente verschoben werden müssen) funktioniert korrekt mit wenigen Elementen.")
+                        .shortDescription(
+                            "Einfügen ans Ende der Liste (ohne dass Elemente verschoben werden müssen) funktioniert korrekt mit wenigen Elementen.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -194,7 +207,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Einfügen ans Ende der Liste (ohne dass Elemente verschoben werden müssen) funktioniert korrekt mit > 256 Elementen.")
+                        .shortDescription(
+                            "Einfügen ans Ende der Liste (ohne dass Elemente verschoben werden müssen) funktioniert korrekt mit > 256 Elementen.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -208,7 +222,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Einfügen in der Mitte der Liste funktioniert korrekt, wenn keine neuen Arrays erzeugt werden müssen.")
+                        .shortDescription(
+                            "Einfügen in der Mitte der Liste funktioniert korrekt, wenn keine neuen Arrays erzeugt werden müssen.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -222,7 +237,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Das Einfügen in der Mitte der Liste funktioniert korrekt, wenn neue Arrays erzeugt werden müssen.")
+                        .shortDescription(
+                            "Das Einfügen in der Mitte der Liste funktioniert korrekt, wenn neue Arrays erzeugt werden müssen.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -313,12 +329,14 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Löschen in der Mitte der Liste funktioniert korrekt mit großen Listen. (>256 Elemente)")
+                        .shortDescription(
+                            "Löschen in der Mitte der Liste funktioniert korrekt mit großen Listen. (>256 Elemente)")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
                                     JUnitTestRef.ofMethod(
-                                        () -> H4TutorTests.class.getDeclaredMethod("testExtractWithMoreThan256ElementsInTheMiddle")
+                                        () -> H4TutorTests.class.getDeclaredMethod(
+                                            "testExtractWithMoreThan256ElementsInTheMiddle")
                                     )
                                 )
                                 .pointsFailedMin()
@@ -376,7 +394,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Eine Exception wird geworfen, wenn ein Element mit einem ungültigen Index eingefügt werden soll.")
+                        .shortDescription(
+                            "Eine Exception wird geworfen, wenn ein Element mit einem ungültigen Index eingefügt werden soll.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
@@ -390,7 +409,8 @@ public class H02_RubricProvider implements RubricProvider {
                         )
                         .build(),
                     Criterion.builder()
-                        .shortDescription("Eine Exception wird geworfen, wenn so viele Elemente hintereinander eingefügt werden sollen, dass das Array zum Zwischenspeichern überfüllt ist.")
+                        .shortDescription(
+                            "Eine Exception wird geworfen, wenn so viele Elemente hintereinander eingefügt werden sollen, dass das Array zum Zwischenspeichern überfüllt ist.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
