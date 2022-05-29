@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import static h02.ListUtils.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
+import static org.junit.jupiter.api.Assertions.*;
 
 @TestForSubmission("h02")
 public class H5TutorTests {
@@ -30,7 +30,7 @@ public class H5TutorTests {
             makeElementWithIndex(42, 0),
             makeElementWithIndex(42, 1)
         );
-        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(toInsert.iterator()));
+        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(assertDoesNotThrow(() -> toInsert.iterator(), EXCEPTION_ON_EXECUTION)));
         assertEqualsOneOf(List.of("Index out of range: -1", "-1"), ex1.getMessage(), "Exception message is not correct");
     }
 
@@ -40,7 +40,7 @@ public class H5TutorTests {
         var toInsert = IntStream.range(0, 1024).mapToObj(x -> makeElementWithIndex(42, x == 0 ? 0 : 1)).toList();
         var listContent = intList(4096);
         var list = toList(listContent);
-        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(toInsert.iterator()));
+        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(assertDoesNotThrow(() -> toInsert.iterator(), EXCEPTION_ON_EXECUTION)));
         assertEquals("array could not hold elements to be moved", ex1.getMessage(), "Exception message is not correct");
     }
 
@@ -55,8 +55,7 @@ public class H5TutorTests {
             expected.add(offset += e.getIndex(), e.getElement());
             offset++;
         }
-        list.insert(toInsert.iterator());
-        assertListIsBuildCorrectly(list, strict, strict, strict);
+        assertDoesNotThrow(() -> list.insert(assertDoesNotThrow(() -> toInsert.iterator(), EXCEPTION_ON_EXECUTION)), EXCEPTION_ON_EXECUTION);
         assertEquals(expected, toJavaList(list));
     }
 
