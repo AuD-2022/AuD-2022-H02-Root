@@ -193,7 +193,7 @@ public class H02_RubricProvider implements RubricProvider {
                         .build(),
                     Criterion.builder()
                         .shortDescription(
-                            "Das Einfügen an das Ende einer Liste funktioniert mit wenigen gleich [[[ARRAY_SIZE]]] Elementen korrekt.")
+                            "Das Einfügen an das Ende einer Liste funktioniert mit weniger gleich [[[ARRAY_SIZE]]] Elementen korrekt.")
                         .grader(
                             Grader.testAwareBuilder()
                                 .requirePass(
