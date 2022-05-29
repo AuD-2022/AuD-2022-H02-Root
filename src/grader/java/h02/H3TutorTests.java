@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static h02.ListUtils.*;
+import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestForSubmission("h02")
@@ -19,7 +20,7 @@ public class H3TutorTests {
     public void testInsertEmptyList() {
         var expected = List.of("A", "B", "C");
         var list = toList(new ArrayList<String>());
-        list.insert(expected, 0);
+        assertDoesNotThrow(() -> list.insert(expected, 0), EXCEPTION_ON_EXECUTION);
         assertEquals(expected, toJavaList(list));
     }
 

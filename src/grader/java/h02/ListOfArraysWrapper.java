@@ -4,22 +4,25 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
+import static org.junit.jupiter.api.Assertions.*;
+
 public class ListOfArraysWrapper<T> implements List<T> {
 
     private final ListOfArrays<T> listOfArrays;
 
     @SafeVarargs
     public ListOfArraysWrapper(T... sequence) {
-        listOfArrays = new ListOfArrays<>(sequence);
+        listOfArrays = assertDoesNotThrow(() -> new ListOfArrays<>(sequence), EXCEPTION_ON_EXECUTION);
     }
 
     @Override
     public int size() {
         var size = 0;
-        var iter = listOfArrays.iterator();
+        var iter = assertDoesNotThrow(() -> listOfArrays.iterator(), EXCEPTION_ON_EXECUTION);
 
-        while (iter.hasNext()) {
-            iter.next();
+        while (assertDoesNotThrow(() -> iter.hasNext(), EXCEPTION_ON_EXECUTION)) {
+            assertDoesNotThrow(() -> iter.next(), EXCEPTION_ON_EXECUTION);
             size++;
         }
 
@@ -68,7 +71,7 @@ public class ListOfArraysWrapper<T> implements List<T> {
 
     @Override
     public boolean add(T t) {
-        listOfArrays.insert(List.of(t), size());
+        assertDoesNotThrow(() -> listOfArrays.insert(List.of(t), size()), EXCEPTION_ON_EXECUTION);
         return true;
     }
 
@@ -90,7 +93,7 @@ public class ListOfArraysWrapper<T> implements List<T> {
     @Override
     public boolean addAll(int index, @NotNull Collection<? extends T> c) {
         // noinspection unchecked
-        listOfArrays.insert((Collection<T>) c, index);
+        assertDoesNotThrow(() -> listOfArrays.insert((Collection<T>) c, index), EXCEPTION_ON_EXECUTION);
         return true;
     }
 
@@ -121,7 +124,7 @@ public class ListOfArraysWrapper<T> implements List<T> {
 
     @Override
     public void clear() {
-        listOfArrays.extract(0, size());
+        assertDoesNotThrow(() -> listOfArrays.extract(0, size()), EXCEPTION_ON_EXECUTION);
     }
 
     @Override
@@ -140,22 +143,22 @@ public class ListOfArraysWrapper<T> implements List<T> {
 
     @Override
     public void add(int index, T element) {
-        listOfArrays.insert(List.of(element), index);
+        assertDoesNotThrow(() -> listOfArrays.insert(List.of(element), index), EXCEPTION_ON_EXECUTION);
     }
 
     @Override
     public T remove(int index) {
-        var a = listOfArrays.extract(index, index + 1);
-        return a.iterator().next();
+        var a = assertDoesNotThrow(() -> listOfArrays.extract(index, index + 1), EXCEPTION_ON_EXECUTION);
+        return assertDoesNotThrow(() -> a.iterator(), EXCEPTION_ON_EXECUTION).next();
     }
 
     @Override
     public int indexOf(Object o) {
         var index = 0;
-        var iter = listOfArrays.iterator();
+        var iter = assertDoesNotThrow(() -> listOfArrays.iterator(), EXCEPTION_ON_EXECUTION);
 
-        while (iter.hasNext()) {
-            if (Objects.equals(o, iter.next())) {
+        while (assertDoesNotThrow(() -> iter.hasNext(), EXCEPTION_ON_EXECUTION)) {
+            if (Objects.equals(o, assertDoesNotThrow(() -> iter.next(), EXCEPTION_ON_EXECUTION))) {
                 return index;
             }
             index++;
@@ -168,10 +171,10 @@ public class ListOfArraysWrapper<T> implements List<T> {
     public int lastIndexOf(Object o) {
         var lastIndex = -1;
         var index = 0;
-        var iter = listOfArrays.iterator();
+        var iter = assertDoesNotThrow(() -> listOfArrays.iterator(), EXCEPTION_ON_EXECUTION);
 
-        while (iter.hasNext()) {
-            if (Objects.equals(o, iter.next())) {
+        while (assertDoesNotThrow(() -> iter.hasNext(), EXCEPTION_ON_EXECUTION)) {
+            if (Objects.equals(o, assertDoesNotThrow(() -> iter.next(), EXCEPTION_ON_EXECUTION))) {
                 lastIndex = index;
             }
             index++;

@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -280,8 +281,8 @@ public class ListUtils {
         // iterate over list
         var iterator = getIterator(list);
         var javaList = new ArrayList<T>();
-        while (iterator.hasNext()) {
-            javaList.add(iterator.next());
+        while (assertDoesNotThrow(() -> iterator.hasNext(), EXCEPTION_ON_EXECUTION)) {
+            javaList.add(assertDoesNotThrow(() -> iterator.next(), EXCEPTION_ON_EXECUTION));
         }
         return javaList;
     }
@@ -295,9 +296,9 @@ public class ListUtils {
     public static String stringRepresentation(ListOfArrays<?> list) {
         var sb = new StringBuilder("(");
         var iterator = getIterator(list);
-        while (iterator.hasNext()) {
-            sb.append(iterator.next());
-            if (iterator.hasNext())
+        while (assertDoesNotThrow(() -> iterator.hasNext(), EXCEPTION_ON_EXECUTION)) {
+            sb.append(assertDoesNotThrow(() -> iterator.next(), EXCEPTION_ON_EXECUTION));
+            if (assertDoesNotThrow(() -> iterator.hasNext(), EXCEPTION_ON_EXECUTION))
                 sb.append(", ");
         }
         sb.append(")");

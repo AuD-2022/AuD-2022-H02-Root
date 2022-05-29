@@ -5,7 +5,8 @@ import java.util.HashSet;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Represents an iterator over a ListOfArrays object.
@@ -48,7 +49,7 @@ public class ListOfArraysIteratorTutor<T> {
      */
     public T next() throws NoSuchElementException {
         //No more elements?
-        if (!hasNext())
+        if(assertDoesNotThrow(() -> !hasNext(), EXCEPTION_ON_EXECUTION))
             throw new NoSuchElementException();
         //Does the iterator have to move forward?
         while (!hasMoreEntries(current.array, currentIndex)) {

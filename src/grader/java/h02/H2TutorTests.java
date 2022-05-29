@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 import static h02.ListUtils.*;
+import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
 import static org.junit.jupiter.api.Assertions.*;
 @TestForSubmission("h02")
 public class H2TutorTests {
@@ -16,22 +17,22 @@ public class H2TutorTests {
     // method hasNext returns true if there is a next element
     @Test
     public void test_hasNext_emptyList_returnsFalse() {
-        var iterator = new ListOfArraysIterator<>(null);
-        assertFalse(iterator.hasNext(), "hasNext() should return false when called on an empty list");
+        var iterator = assertDoesNotThrow(() -> new ListOfArraysIterator<>(null), EXCEPTION_ON_EXECUTION);
+        assertFalse(assertDoesNotThrow(() -> iterator.hasNext(), EXCEPTION_ON_EXECUTION), "hasNext() should return false when called on an empty list");
         var javaList = List.of("A", "B", "C");
-        var iterator2 = new ListOfArraysIterator<>(toListHead(javaList));
-        assertTrue(iterator2.hasNext(), "hasNext() should return true when called on the first element of a non-empty list");
+        var iterator2 = assertDoesNotThrow(() -> new ListOfArraysIterator<>(toListHead(javaList)), EXCEPTION_ON_EXECUTION);
+        assertTrue(assertDoesNotThrow(() -> iterator2.hasNext(), EXCEPTION_ON_EXECUTION), "hasNext() should return true when called on the first element of a non-empty list");
     }
 
     // method next returns the next element
     @Test
     public void test_next_emptyList_throwsNoSuchElementException() {
-        var iterator = new ListOfArraysIterator<>(null);
-        assertThrows(NoSuchElementException.class, () -> iterator.next(), "next() should throw NoSuchElementException when called on an empty list");
+        var iterator = assertDoesNotThrow(() -> new ListOfArraysIterator<>(null), EXCEPTION_ON_EXECUTION);
+        assertThrows(NoSuchElementException.class, () -> assertDoesNotThrow(() -> iterator.next(), EXCEPTION_ON_EXECUTION), "next() should throw NoSuchElementException when called on an empty list");
         var javaList = stringList(257);
-        var iterator2 = new ListOfArraysIterator<>(toListHead(javaList));
+        var iterator2 = assertDoesNotThrow(() -> new ListOfArraysIterator<>(toListHead(javaList)), EXCEPTION_ON_EXECUTION);
         for (int i = 0; i < javaList.size(); i++) {
-            assertEquals(javaList.get(i), iterator2.next(), "Lists differ at index " + i);
+            assertEquals(javaList.get(i), assertDoesNotThrow(() -> iterator2.next(), EXCEPTION_ON_EXECUTION), "Lists differ at index " + i);
         }
     }
 
@@ -41,13 +42,13 @@ public class H2TutorTests {
         var javaList = stringList(4096);
         var list = toList(javaList);
         // Test the iterator method
-        var iterator = list.iterator();
+        var iterator = assertDoesNotThrow(() -> list.iterator(), EXCEPTION_ON_EXECUTION);
         for (int i = 0; i < javaList.size(); i++) {
-            assertSame(javaList.get(i), iterator.next());
+            assertSame(javaList.get(i), assertDoesNotThrow(() -> iterator.next(), EXCEPTION_ON_EXECUTION));
             if (i < javaList.size() - 1) {
-                assertTrue(iterator.hasNext());
+                assertTrue(assertDoesNotThrow(() -> iterator.hasNext(), EXCEPTION_ON_EXECUTION));
             } else {
-                assertFalse(iterator.hasNext());
+                assertFalse(assertDoesNotThrow(() -> iterator.hasNext(), EXCEPTION_ON_EXECUTION));
             }
         }
     }
