@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.IntStream;
 
 import static h02.ListUtils.*;
-import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
+import static h02.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestForSubmission("h02")
@@ -24,23 +24,23 @@ public class H5TutorTests {
     // test insert method exceptions
     @Test
     public void testInsertExceptionWithNegativeIndex() {
-        var list = toList(intList(0));
+        var list = toList(mainList(0));
         var toInsert = List.of(
-            makeElementWithIndex(42, -1),
-            makeElementWithIndex(42, 0),
-            makeElementWithIndex(42, 1)
+            makeElementWithIndex("#0", -1),
+            makeElementWithIndex("#1", 0),
+            makeElementWithIndex("#2", 1)
         );
-        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(assertDoesNotThrow(() -> toInsert.iterator(), EXCEPTION_ON_EXECUTION)));
+        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(toInsert.iterator()));
         assertEqualsOneOf(List.of("Index out of range: -1", "-1"), ex1.getMessage(), "Exception message is not correct");
     }
 
     // test insert exception when inserting more than 256 elements
     @Test
     public void testInsertExceptionWithTooManyElements() {
-        var toInsert = IntStream.range(0, 1024).mapToObj(x -> makeElementWithIndex(42, x == 0 ? 0 : 1)).toList();
-        var listContent = intList(4096);
+        var toInsert = IntStream.range(0, LONG_TEST_LENGTH).mapToObj(x -> makeElementWithIndex("#" + x, x == 0 ? 0 : 1)).toList();
+        var listContent = mainList(LONG_TEST_LENGTH);
         var list = toList(listContent);
-        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(assertDoesNotThrow(() -> toInsert.iterator(), EXCEPTION_ON_EXECUTION)));
+        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.insert(assertDoesNotThrow(toInsert::iterator, EXCEPTION_ON_EXECUTION)));
         assertEquals("array could not hold elements to be moved", ex1.getMessage(), "Exception message is not correct");
     }
 
@@ -55,16 +55,16 @@ public class H5TutorTests {
             expected.add(offset += e.getIndex(), e.getElement());
             offset++;
         }
-        assertDoesNotThrow(() -> list.insert(assertDoesNotThrow(() -> toInsert.iterator(), EXCEPTION_ON_EXECUTION)), EXCEPTION_ON_EXECUTION);
+        assertDoesNotThrow(() -> list.insert(assertDoesNotThrow(toInsert::iterator, EXCEPTION_ON_EXECUTION)), EXCEPTION_ON_EXECUTION);
         assertEquals(expected, toJavaList(list));
     }
 
     // Test insert at the end of the list
     @Test
     public void testInsertAtEnd() {
-        testInsert(intList(5),
+        testInsert(mainList(5),
             List.of(
-                makeElementWithIndex(42, 5)
+                makeElementWithIndex("#0", 5)
             ),
             false
         );
@@ -73,9 +73,9 @@ public class H5TutorTests {
     // Test insert at the beginning of the list
     @Test
     public void testInsertAtBeginning() {
-        testInsert(intList(5),
+        testInsert(mainList(5),
             List.of(
-                makeElementWithIndex(42, 0)
+                makeElementWithIndex("#0", 0)
             ),
             false
         );
@@ -84,9 +84,9 @@ public class H5TutorTests {
     // Test insert in the middle of the list
     @Test
     public void testInsertInMiddle() {
-        testInsert(intList(5),
+        testInsert(mainList(5),
             List.of(
-                makeElementWithIndex(42, 2)
+                makeElementWithIndex("#0", 2)
             ),
             false
         );
@@ -95,13 +95,13 @@ public class H5TutorTests {
     // Test insert multiple elements
     @Test
     public void testInsertMultipleAsBlock() {
-        testInsert(intList(14),
+        testInsert(mainList(14),
             List.of(
-                makeElementWithIndex(43, 2),
-                makeElementWithIndex(44, 1),
-                makeElementWithIndex(45, 1),
-                makeElementWithIndex(46, 1),
-                makeElementWithIndex(47, 1)
+                makeElementWithIndex("#0", 2),
+                makeElementWithIndex("#1", 1),
+                makeElementWithIndex("#2", 1),
+                makeElementWithIndex("#3", 1),
+                makeElementWithIndex("#4", 1)
             ),
             false
         );
@@ -110,13 +110,13 @@ public class H5TutorTests {
     // Test insert multiple elements spread across the list
     @Test
     public void testInsertMultipleAsSpread() {
-        testInsert(intList(0 + 2 + 5 + 5 + 6),
+        testInsert(mainList(0 + 2 + 5 + 5 + 6),
             List.of(
-                makeElementWithIndex(43, 0),
-                makeElementWithIndex(44, 2),
-                makeElementWithIndex(45, 5),
-                makeElementWithIndex(46, 5),
-                makeElementWithIndex(47, 6)
+                makeElementWithIndex("#0", 0),
+                makeElementWithIndex("#1", 2),
+                makeElementWithIndex("#2", 5),
+                makeElementWithIndex("#3", 5),
+                makeElementWithIndex("#4", 6)
             ),
             false
         );
@@ -125,13 +125,13 @@ public class H5TutorTests {
     // Test stop conditions
     @Test
     public void testInsertStopConditions() {
-        testInsert(intList(3),
+        testInsert(mainList(3),
             List.of(
-                makeElementWithIndex(42, 2),
-                makeElementWithIndex(43, 0),
-                makeElementWithIndex(44, 0),
-                makeElementWithIndex(46, 0),
-                makeElementWithIndex(47, 0)
+                makeElementWithIndex("#0", 2),
+                makeElementWithIndex("#1", 0),
+                makeElementWithIndex("#2", 0),
+                makeElementWithIndex("#3", 0),
+                makeElementWithIndex("#4", 0)
             ),
             false
         );

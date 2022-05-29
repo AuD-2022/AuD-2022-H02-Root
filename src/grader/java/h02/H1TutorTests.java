@@ -2,15 +2,8 @@ package h02;
 
 import java.util.List;
 
-import static h02.ListUtils.assertListIsBuildCorrectly;
-import static h02.ListUtils.assertSameElements;
-import static h02.ListUtils.head;
-import static h02.ListUtils.tail;
-import static h02.ListUtils.toJavaList;
-import static h02.TestConstants.DIFFERS_HEAD_NULL;
-import static h02.TestConstants.DIFFERS_TAIL_NULL;
-import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
-import static h02.TestConstants.LIST_DIFFERS;
+import static h02.ListUtils.*;
+import static h02.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -27,51 +20,51 @@ public class H1TutorTests {
         assertNull(tail(list), DIFFERS_TAIL_NULL);
     }
 
+    /**
+     * Test the constructor of ListOfArraysTutor with a given list size
+     *
+     * @param listSize the size of the list to be created
+     */
+    public void testListOfArraysConstructor(int listSize, boolean checkListIsBuildCorrectly) {
+        List<String> expected = mainList(listSize);
+        var list = assertDoesNotThrow(() -> new ListOfArrays<>(expected.toArray(String[]::new)), EXCEPTION_ON_EXECUTION);
+        assertListIsBuildCorrectly(list, checkListIsBuildCorrectly, checkListIsBuildCorrectly, checkListIsBuildCorrectly);
+        assertEquals(expected, toJavaList(list), LIST_DIFFERS);
+    }
+
+
     // Test the constructor of ListOfArraysTutor with an empty string array
     @Test
     public void testListOfArraysConstructor_EmptyList() {
-        var listArray = new String[] {};
-        ListOfArrays<String> list = assertDoesNotThrow(() -> new ListOfArrays<>(listArray), EXCEPTION_ON_EXECUTION);
-        assertEquals(List.of(), toJavaList(list), LIST_DIFFERS);
+        testListOfArraysConstructor(0, false);
     }
 
     // single element list
     @Test
     public void testListOfArraysConstructor_SingleElementList() {
-        var listArray = new String[] {"A"};
-        ListOfArrays<String> list = assertDoesNotThrow(() -> new ListOfArrays<>(listArray), EXCEPTION_ON_EXECUTION);
-        assertEquals(List.of(listArray), toJavaList(list), LIST_DIFFERS);
+        testListOfArraysConstructor(1, false);
     }
 
     // Test that the Elements of the list are the same as the elements of the argument array
     @Test
     public void testListOfArraysConstructor_SameElements() {
-        var listArray = new String[] {"H", "E", "L", "L", "O"};
-        ListOfArrays<String> list = assertDoesNotThrow(() -> new ListOfArrays<>(listArray), EXCEPTION_ON_EXECUTION);
+        var listArray = List.of(1, 2, 3, 4, 5).toArray(Integer[]::new);
+        ListOfArrays<Integer> list = assertDoesNotThrow(() -> new ListOfArrays<>(listArray), EXCEPTION_ON_EXECUTION);
+        assertListIsIterable(list);
         assertSameElements(List.of(listArray), toJavaList(list));
     }
 
     // array with more than 256 elements
     @Test
     public void testListOfArraysConstructor_LongList() {
-        var listArray = new String[257];
-        for (int i = 0; i < 257; i++) {
-            listArray[i] = Character.toString((char) i);
-        }
-        ListOfArrays<String> list = assertDoesNotThrow(() -> new ListOfArrays<>(listArray), EXCEPTION_ON_EXECUTION);
-        assertEquals(List.of(listArray), toJavaList(list), LIST_DIFFERS);
+        testListOfArraysConstructor(257, false);
     }
 
     // Harder test checking that the list is build correctly
     @Test
     public void testListOfArraysConstructor_CorrectList() {
-        var listArray = new String[4096];
-        for (int i = 0; i < 4096; i++) {
-            listArray[i] = Character.toString((char) i);
-        }
-        ListOfArrays<String> list = assertDoesNotThrow(() -> new ListOfArrays<>(listArray), EXCEPTION_ON_EXECUTION);
-        assertEquals(List.of(listArray), toJavaList(list));
-        assertListIsBuildCorrectly(list);
+        testListOfArraysConstructor(513, true);
+
     }
 
 }

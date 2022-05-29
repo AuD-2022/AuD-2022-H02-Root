@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import static h02.ListUtils.*;
-import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
+import static h02.TestConstants.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestForSubmission("h02")
@@ -18,7 +18,7 @@ public class H3TutorTests {
     // test insert with empty list
     @Test
     public void testInsertEmptyList() {
-        var expected = List.of("A", "B", "C");
+        var expected = mainList(3);
         var list = toList(new ArrayList<String>());
         assertDoesNotThrow(() -> list.insert(expected, 0), EXCEPTION_ON_EXECUTION);
         assertEquals(expected, toJavaList(list));
@@ -36,7 +36,7 @@ public class H3TutorTests {
 
     public <T> void testInsert(List<T> toInsert, List<T> listContent, int index, boolean checkIfListIsBuiltCorrectly) {
         var list = toList(listContent);
-        list.insert(toInsert, index);
+        assertDoesNotThrow(() -> list.insert(toInsert, index), EXCEPTION_ON_EXECUTION);
         assertListIsBuildCorrectly(list, checkIfListIsBuiltCorrectly, checkIfListIsBuiltCorrectly, checkIfListIsBuiltCorrectly);
         assertEquals(
             Stream.of(
@@ -47,31 +47,32 @@ public class H3TutorTests {
                 .reduce(Stream::concat)
                 .orElseGet(Stream::empty)
                 .toList(),
-            toJavaList(list)
+            toJavaList(list),
+            LIST_DIFFERS
         );
     }
 
     // test insert at the end of the list
     @Test
     public void testInsertAtEnd() {
-        testInsert(List.of("A", "B", "C", "D"), List.of("A", "B", "C"), 3, false);
+        testInsert(insertionList(4), mainList(3), 3, false);
     }
 
     // test insert at the end of the list with more than 256 elements
     @Test
     public void testInsertAtEndWithMoreThan256Elements() {
-        testInsert(intList(257), intList(250), 250, false);
+        testInsert(insertionList(257), mainList(250), 250, false);
     }
 
     // test insert in the middle of the list
     @Test
     public void testInsertInMiddle() {
-        testInsert(intList(5), intList(3), 2, false);
+        testInsert(insertionList(5), mainList(3), 2, false);
     }
 
     // test insert in the middle of the list with more than 256 elements
     @Test
     public void testInsertInMiddleWithMoreThan256Elements() {
-        testInsert(intList(257), intList(2550), 255, false);
+        testInsert(insertionList(257), mainList(LONG_TEST_LENGTH), 255, false);
     }
 }

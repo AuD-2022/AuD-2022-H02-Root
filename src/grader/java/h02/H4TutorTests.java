@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import static h02.ListUtils.*;
 import static h02.TestConstants.EXCEPTION_ON_EXECUTION;
+import static h02.TestConstants.mainList;
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestForSubmission("h02")
@@ -16,16 +17,16 @@ public class H4TutorTests {
     // test exceptions
     @Test
     public void testExtractWithEmptyList() {
-        var listContent = intList(14);
+        var listContent = mainList(14);
         var list = toList(listContent);
-        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> assertDoesNotThrow(() -> list.extract(-1, 1)), EXCEPTION_ON_EXECUTION);
+        var ex1 = assertThrows(IndexOutOfBoundsException.class, () -> list.extract(-1, 1));
         assertEqualsOneOf(List.of("Index out of range: -1", "-1"), ex1.getMessage(), "Exception message is not correct");
-        var ex2 = assertThrows(IndexOutOfBoundsException.class, () -> assertDoesNotThrow(() -> list.extract(3, 2)), EXCEPTION_ON_EXECUTION);
+        var ex2 = assertThrows(IndexOutOfBoundsException.class, () -> list.extract(3, 2));
         assertEquals("3 is greater than 2", ex2.getMessage(), "Exception message is not correct");
     }
 
     public void testExtract(int i, int j, int listLength, boolean checkList, boolean checkResult, boolean strict) {
-        var listContent = intList(listLength);
+        var listContent = mainList(listLength);
         var list = toList(listContent);
         var result = assertDoesNotThrow(() -> list.extract(i, j), EXCEPTION_ON_EXECUTION);
         if (checkList) {
