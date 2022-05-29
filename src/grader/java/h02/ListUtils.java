@@ -173,14 +173,39 @@ public class ListUtils {
      * @return the created ListOfArrays
      */
     @SuppressWarnings("unchecked")
-    public static <T> ListOfArrays<T> toList(List<T> list) {
-        ListOfArrays<T> result = spy(mock(ListOfArrays.class, Answers.CALLS_REAL_METHODS));
-        setArrayLength(result, 256);
-        var ht = toHeadTail(list);
-        //Set head and tail
-        setHead(result, ht.head);
-        setTail(result, ht.tail);
+    public static <T> ListOfArrays<T> toList(List<T> list, boolean stub) {
+        ListOfArrays<T> result;
+        if (stub) {
+            result = spy(mock(ListOfArrays.class, Answers.CALLS_REAL_METHODS));
+            setArrayLength(result, 256);
+            var ht = toHeadTail(list);
+            //Set head and tail
+            setHead(result, ht.head);
+            setTail(result, ht.tail);
+        } else {
+            result = new ListOfArrays<T>((T[]) list.toArray());
+        }
         return result;
+    }
+
+    /**
+     * create ListOfArrays from List
+     *
+     * @param list the list to create the ListOfArrays from
+     * @param <T>  the type of the list
+     * @return the created ListOfArrays
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> ListOfArrays<T> toList(List<T> list) {
+        // Try without stubbing
+        try {
+            var result = toList(list, false);
+            assertListIsIterable(result);
+            assertEquals(toJavaList(result), list);
+            return result;
+        } catch (Exception e) {
+            return toList(list, true);
+        }
     }
 
 
